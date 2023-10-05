@@ -14,4 +14,7 @@
   <ItemGroup>
     <Folder Include="Views\Reserva\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\assets\barrier-car.png" />
+  </ItemGroup>
 </Project>

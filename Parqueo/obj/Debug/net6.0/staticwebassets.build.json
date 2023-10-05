@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TWkEES6Odhzx9ErCsySpbW5ZWruX6nzn1lQET1eO1m0=",
+  "Hash": "C+/ohZ2cMvmPMRS9oAMyYr7A0cJtGjh1ofs6hewUFpA=",
   "Source": "Parqueo",
   "BasePath": "_content/Parqueo",
   "Mode": "Default",
@@ -49,6 +49,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\Parqueo.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\wwwroot\\assets\\barrier-car.png",
+      "SourceId": "Parqueo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\wwwroot\\",
+      "BasePath": "_content/Parqueo",
+      "RelativePath": "assets/barrier-car.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\barrier-car.png"
     },
     {
       "Identity": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\wwwroot\\css\\site.css",

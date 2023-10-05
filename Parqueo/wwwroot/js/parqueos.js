@@ -7,6 +7,7 @@ var parqueos = function () {
     var isEditParqueo = false;
     var idParqueoSeleccionado = 0;
     var nombreParqueoSeleccionado = '';
+    var cantidadParqueos = 0;
 
     // Campos
     var txtNombre = $("#txtNombreParqueos");
@@ -25,6 +26,9 @@ var parqueos = function () {
     var init = function (args) {
 
         initArgs = args;
+
+        // Se establece la cantidad de correos
+        cantidadParqueos = initArgs.cantidadParqueos;
 
         // Se establece los eventos de los botones
         btnAddParqueo.click(fnBotton);
@@ -80,8 +84,19 @@ var parqueos = function () {
     }
 
     const fnAddParqueo = function (e) {
-
+        debugger;
         e.preventDefault();
+
+        if (cantidadParqueos == 1) {
+            Swal.fire({
+                title: 'Advertencia',
+                text: 'Ya existe un parqueo existente. No se puede agregar más de un parqueo.',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+
+            return;
+        }
 
         // Se validan los campos
         if (!validationFieldAdd()) {
