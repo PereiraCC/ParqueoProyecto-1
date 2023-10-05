@@ -84,7 +84,7 @@ var parqueos = function () {
     }
 
     const fnAddParqueo = function (e) {
-        debugger;
+        
         e.preventDefault();
 
         if (cantidadParqueos == 1) {
