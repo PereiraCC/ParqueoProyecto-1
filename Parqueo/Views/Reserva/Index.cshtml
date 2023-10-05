@@ -1,21 +1,26 @@
-﻿@{
+﻿@model List<Tiquetes>
+@{
     ViewData["Title"] = "Reversa";
-
+    
 }
 
 @section Scripts {
     <script src="~/js/tiquetes.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 }
 
 <script type="text/javascript">
     $(document).ready(function () {
         tiquetes.Init({
-            addTiquete: '@Url.Action("addTiquete", "Reserva")'
+            addTiquete: '@Url.Action("addTiquete", "Reserva")',
+            editTiquete: '@Url.Action("editTiquete", "Reserva")',
+            deleteTiquete: '@Url.Action("removeTiquete", "Reserva")',
+            searchTiquete: '@Url.Action("searchTiquete", "Reserva")',
+            mostrarTiquete: '@Url.Action("mostrarTodos", "Reserva")',
         });
     });
 </script>
-
-
 
     <div>
         <h1 class="display-4">Reservas</h1>
@@ -25,12 +30,12 @@
 
         <div class="form-group">
             <label for="txtFechaIngresoTiquetes">Fecha Ingreso</label>
-            <input type="date" class="form-control" id="txtFechaIngresoTiquetes">
+            <input type="datetime-local" class="form-control" id="txtFechaIngresoTiquetes">
         </div>
 
         <div class="form-group">
             <label for="txtFechaSalidaTiquetes">Fecha Salida</label>
-            <input type="date" class="form-control" id="txtFechaSalidaTiquetes">
+            <input type="datetime-local" class="form-control" id="txtFechaSalidaTiquetes">
         </div>
 
         <div class="form-group">
@@ -48,35 +53,68 @@
             <input type="number" class="form-control" id="txtTarifaMediaHoraTiquetes">
         </div>
 
-        <button id="btnAgregarTiquete" class="btn btn-primary">Reservar</button>
+        <button id="btnAgregarTiquete" class="btn btn-primary">Crear Tiquete</button>
 
     </div>
 
     <div>
-        <table id="myDataTable">
+
+        <div class="form-group">
+            <label for="txtValorBusqueda">Busqueda</label>
+            <input type="text" class="form-control" id="txtValorBusqueda">
+        </div>
+
+        <button id="btnBuscarTiquete" class="btn btn-primary">Buscar Tiquete</button>
+        <button id="btnMostrarTiquete" class="btn btn-primary">Mostrar Todos</button>
+
+    </div>
+
+    <div>
+        <table id="tableTiquetes" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
-                    <th>Column 1</th>
-                    <th>Column 2</th>
+                    <th width="4%">Id</th>
+                    <th width="13%">Fecha Entrada</th>
+                    <th width="13%">Fecha Salida</th>
+                    <th width="13%">Placa</th>
+                    <th width="13%">Tarifa Hora</th>
+                    <th width="15%">Tarida Media Hora</th>
+                    <th width="35%">Acciones</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Row 1 Data 1</td>
-                    <td>Row 1 Data 2</td>
-                </tr>
-                <tr>
-                    <td>Row 2 Data 1</td>
-                    <td>Row 2 Data 2</td>
-                </tr>
+            <tbody id="tablebodyTiquetes">
+                @{
+                    foreach( Tiquetes tiquetes in @Model ){
+                                <tr>
+                                    <td>@tiquetes.idTiquete</td>
+                                    <td>@tiquetes.fechaIngreso</td>
+                                    <td>@tiquetes.fechaSalida</td>
+                                    <td>@tiquetes.placa</td>
+                                    <td>@tiquetes.tarifaHora</td>
+                                    <td>@tiquetes.tarifaMediaHora</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-info btnEdit"
+                                                    data-id="@tiquetes.idTiquete"
+                                                    data-fechaIngreso="@tiquetes.fechaIngreso"
+                                                    data-fechaSalida="@tiquetes.fechaSalida"
+                                                    data-placa="@tiquetes.placa"
+                                                    data-tarifaHora="@tiquetes.tarifaHora"
+                                                    data-tarifaMediaHora="@tiquetes.tarifaMediaHora"
+                                                >
+                                                    Editar
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-danger btnDelete" data-id="@tiquetes.idTiquete">Eliminar</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                   
+                                </tr>
+                    }
+                }
             </tbody>
-
         </table>
     </div>
-    
-
-
-
-    @*<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("addTiquete", "Reserva")'">Agregar</button>*@
-
-

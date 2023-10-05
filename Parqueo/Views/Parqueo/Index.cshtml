@@ -1,0 +1,133 @@
+﻿@model List<Parqueos>
+@{
+    ViewData["Title"] = "Parqueo";
+    
+}
+
+@section Scripts {
+    <script src="~/js/parqueos.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        parqueos.Init({
+            addParqueo: '@Url.Action("addParqueo", "Parqueo")',
+            editParqueo: '@Url.Action("editParqueo", "Parqueo")',
+            deleteParqueo: '@Url.Action("removeParqueo", "Parqueo")',
+            searchParqueo: '@Url.Action("searchParqueo", "Parqueo")',
+            mostrarParqueo: '@Url.Action("mostrarTodos", "Parqueo")',
+        });
+    });
+</script>
+
+    <div>
+        <h1 class="display-4">Parqueos</h1>
+    </div>
+
+    <div>
+
+        <div class="form-group">
+            <label for="txtNombreParqueos">Nombre</label>
+            <input type="text" class="form-control" id="txtNombreParqueos">
+        </div>
+
+         <div class="form-group">
+            <label for="txtCantidadParqueos">Cantidad Maxima Vehiculos</label>
+            <input type="text" class="form-control" id="txtCantidadParqueos">
+        </div>
+
+        <div class="form-group">
+            <label for="txtHoraAperturaParqueos">Hora Apertura</label>
+            <input type="datetime-local" class="form-control" id="txtHoraAperturaParqueos">
+        </div>
+
+        <div class="form-group">
+            <label for="txtHoraCierreParqueos">Hora Cierre</label>
+            <input type="datetime-local" class="form-control" id="txtHoraCierreParqueos">
+        </div>
+
+        <div class="form-group">
+            <label for="txtTarifaHoraParqueos">Tarifa por Hora</label>
+            <input type="number" class="form-control" id="txtTarifaHoraParqueos">
+        </div>
+
+        <div class="form-group">
+            <label for="txtTarifaMediaHoraParqueos">Tarifa por Media Hora</label>
+            <input type="number" class="form-control" id="txtTarifaMediaHoraParqueos">
+        </div>
+
+        <button id="btnAgregarParqueo" class="btn btn-primary">Crear Parqueo</button>
+
+    </div>
+
+    <div>
+
+        <div class="form-group">
+            <label for="txtValorBusquedaParqueos">Busqueda Parqueos</label>
+            <input type="text" class="form-control" id="txtValorBusquedaParqueos">
+        </div>
+
+        <button id="btnBuscarParqueos" class="btn btn-primary">Buscar</button>
+        <button id="btnMostrarTodosParqueos" class="btn btn-primary">Mostrar Todos</button>
+
+    </div>
+
+    <div>
+        <table id="tableParqueo" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th width="4%">Id</th>
+                    <th width="10%">Nombre</th>
+                    <th width="10%">Cantidad Vehiculos</th>
+                    <th width="13%">Hora Apertura</th>
+                    <th width="13%">Hora Cierre</th>
+                    <th width="13%">Tarifa Hora</th>
+                    <th width="13%">Tarida Media Hora</th>
+                    <th width="40%">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablebodyTiquetes">
+                @{
+                    foreach( Parqueos parqueo in @Model ){
+                        <tr>
+                            <td>@parqueo.idParqueo</td>
+                            <td>@parqueo.Nombre</td>
+                            <td>@parqueo.CantidadMaximaVehiculos</td>
+                            <td>@parqueo.HoraApertura</td>
+                            <td>@parqueo.HoraCierre</td>
+                            <td>@parqueo.TarifaHora</td>
+                            <td>@parqueo.TarifaMediaHora</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <button type="button" class="btn btn-info btnEdit"
+                                            data-id="@parqueo.idParqueo"
+                                            data-nombre="@parqueo.Nombre"
+                                            data-cantidadMaximaVehiculos="@parqueo.CantidadMaximaVehiculos"
+                                            data-horaApertura="@parqueo.HoraApertura"
+                                            data-horaCierre="@parqueo.HoraCierre"
+                                            data-tarifaHora="@parqueo.TarifaHora"
+                                            data-tarifaMediaHora="@parqueo.TarifaMediaHora"
+                                        >
+                                            Editar
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="button" class="btn btn-danger btnDelete" 
+                                            data-id="@parqueo.idParqueo"
+                                            data-nombre="@parqueo.Nombre"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                                   
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>

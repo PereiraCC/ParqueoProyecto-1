@@ -1,80 +1,85 @@
 ﻿
-var tiquetes = function () {
+var parqueos = function () {
 
     // Se declara la variables globales
     var initArgs;
 
-    var isEditTiquete = false;
-    var idTiqueteSeleccionado = 0;
+    var isEditParqueo = false;
+    var idParqueoSeleccionado = 0;
+    var nombreParqueoSeleccionado = '';
 
-    // Campos de agregar tiquete
-    var txtFechaIngreso = $("#txtFechaIngresoTiquetes");
-    var txtFechaSalida = $("#txtFechaSalidaTiquetes");
-    var txtPlaca = $("#txtPlacaTiquetes");
-    var txtTarifaHora = $("#txtTarifaHoraTiquetes");
-    var txtTarifaMediaHora = $("#txtTarifaMediaHoraTiquetes");
-    var txtSearchTiquete = $("#txtValorBusqueda");
+    // Campos
+    var txtNombre = $("#txtNombreParqueos");
+    var txtCantidadMaxima = $("#txtCantidadParqueos");
+    var txtHoraApertura = $("#txtHoraAperturaParqueos");
+    var txtHoraCierre = $("#txtHoraCierreParqueos");
+    var txtTarifaHora = $("#txtTarifaHoraParqueos");
+    var txtTarifaMediaHora = $("#txtTarifaMediaHoraParqueos");
+    var txtSearchParqueo = $("#txtValorBusquedaParqueos");
 
     // Botones
-    var btnAddTiquete = $('#btnAgregarTiquete');
+    var btnAddParqueo = $('#btnAgregarParqueo');
+    var btnSearchParqueo = $('#btnBuscarParqueos');
+    var btnMostrarTodosParqueo = $('#btnMostrarTodosParqueos');
 
     var init = function (args) {
 
         initArgs = args;
 
         // Se establece los eventos de los botones
-        btnAddTiquete.click(fnBotton);
-
+        btnAddParqueo.click(fnBotton);
 
         $('.btnEdit').click(function (e) {
 
-            const editTiquete = {
+            const editParqueo = {
                 id: $(this).attr("data-id"),
-                fechaIngreso: $(this).attr("data-fechaIngreso"),
-                fechaSalida: $(this).attr("data-fechaSalida"),
-                placa: $(this).attr("data-placa"),
+                nombre: $(this).attr("data-nombre"),
+                cantidadMaximaVehiculos: $(this).attr("data-cantidadMaximaVehiculos"),
+                horaApertura: $(this).attr("data-horaApertura"),
+                horaCierre: $(this).attr("data-horaCierre"),
                 tarifaHora: $(this).attr("data-tarifaHora"),
                 tarifaMediaHora: $(this).attr("data-tarifaMediaHora")
             };
-            
-            txtFechaIngreso.val(convertToDateTimeLocalString(editTiquete.fechaIngreso));
-            txtFechaSalida.val((editTiquete.fechaSalida != undefined) ? convertToDateTimeLocalString(editTiquete.fechaSalida) : null );
-            txtPlaca.val(editTiquete.placa);
-            txtTarifaHora.val(editTiquete.tarifaHora);
-            txtTarifaMediaHora.val(editTiquete.tarifaMediaHora);
 
-            btnAddTiquete.html("Editar Tiquete");
-            isEditTiquete = true;
-            idTiqueteSeleccionado = editTiquete.id;
+            txtNombre.val(editParqueo.nombre);
+            txtCantidadMaxima.val(editParqueo.cantidadMaximaVehiculos);
+            txtHoraApertura.val(convertToDateTimeLocalString(editParqueo.horaApertura));
+            txtHoraCierre.val(convertToDateTimeLocalString(editParqueo.horaCierre));
+            txtTarifaHora.val(editParqueo.tarifaHora);
+            txtTarifaMediaHora.val(editParqueo.tarifaMediaHora);
+
+            btnAddParqueo.html("Editar Parqueo");
+            isEditParqueo = true;
+            idParqueoSeleccionado = editParqueo.id;
         });
 
         $('.btnDelete').click(function (e) {
-            idTiqueteSeleccionado = $(this).attr("data-id");
-            fnRemoveTiquete(e);
+            idParqueoSeleccionado = $(this).attr("data-id");
+            nombreParqueoSeleccionado = $(this).attr("data-nombre");
+            fnRemoveParqueo(e);
         });
 
-        $('#btnBuscarTiquete').click(function (e) {
-            fnSearchTiquete(e);
+        btnSearchParqueo.click(function (e) {
+            fnSearchParqueo(e);
         });
 
-        $('#btnMostrarTiquete').click(function (e) {
-            fnMostrarTodosTiquete(e);
+        btnMostrarTodosParqueo.click(function (e) {
+            fnMostrarTodosParqueo(e);
         });
-
 
     }
 
     const fnBotton = function (e) {
 
-        if (!isEditTiquete) {
-            fnAddTiquete(e);
+        if (!isEditParqueo) {
+            fnAddParqueo(e);
         } else {
-            fnEditTiquete(e);
+            fnEditParqueo(e);
         }
 
     }
 
-    const fnAddTiquete = function (e) {
+    const fnAddParqueo = function (e) {
 
         e.preventDefault();
 
@@ -82,31 +87,30 @@ var tiquetes = function () {
         if (!validationFieldAdd()) {
             return;
         }
-        
 
         // Se envia la peticion atravez de Ajax
         $.ajax({
             async: true,
             type: "GET",
-            url: initArgs.addTiquete,
+            url: initArgs.addParqueo,
             data: {
-                fechaIngreso: txtFechaIngreso.val(),
-                fechaSalida: txtFechaSalida.val(),
-                placa: txtPlaca.val(),
+                nombre: txtNombre.val(),
+                cantidadMaximaVehiculos: txtCantidadMaxima.val(),
+                horaApertura: txtHoraApertura.val(),
+                horaCierre: txtHoraCierre.val(),
                 tarifaHora: txtTarifaHora.val(),
                 tarifaMediaHora: txtTarifaMediaHora.val(),
             },
             datatype: "json",
             cache: true,
-            success: function (response) {               
-                cleanCamposAdd();
-                window.location.href = '/Reserva'
+            success: function (response) {
+                window.location.href = '/Parqueo'
             },
             error: function (e) {
                 console.log(e);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Ocurrio un error al crear tiquete, por favor intentelo de nuevo.',
+                    text: 'Ocurrio un error al crear parqueo, por favor intentelo de nuevo.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
@@ -119,11 +123,17 @@ var tiquetes = function () {
 
         let msjError = '';
 
-        if (txtFechaIngreso.val() == '') {
-            msjError = 'La Fecha de Ingreso debe ser valida';
+        if (txtNombre.val() == '') {
+            msjError = 'El Nombre es obligatorio';
 
-        } else if (txtPlaca.val() == '') {
-            msjError = 'La Placa es obligatoria';
+        } else if (txtCantidadMaxima.val() == 0) {
+            msjError = 'La Cantidad Maxima Vehiculos es obligatoria';
+
+        } else if (txtHoraApertura.val() == '') {
+            msjError = 'La Hora de Apertura es obligatoria';
+
+        } else if (txtHoraCierre.val() == '') {
+            msjError = 'La Hora de Cierre es obligatoria';
 
         } else if (txtTarifaHora.val() == 0) {
             msjError = 'La Tarifa Hora es obligatoria';
@@ -146,14 +156,6 @@ var tiquetes = function () {
 
         return true;
 
-    }
-
-    const cleanCamposAdd = function (e) {
-        txtFechaIngreso.val('');
-        txtFechaSalida.val('');
-        txtPlaca.val('');
-        txtTarifaHora.val('');
-        txtTarifaMediaHora.val('');
     }
 
     const convertToDateTimeLocalString = function (date) {
@@ -224,7 +226,7 @@ var tiquetes = function () {
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
-    const fnEditTiquete = function (e) {
+    const fnEditParqueo = function (e) {
 
         e.preventDefault();
 
@@ -237,27 +239,28 @@ var tiquetes = function () {
         $.ajax({
             async: true,
             type: "GET",
-            url: initArgs.editTiquete,
+            url: initArgs.editParqueo,
             data: {
-                idTiquete: idTiqueteSeleccionado,
-                fechaIngreso: txtFechaIngreso.val(),
-                fechaSalida: txtFechaSalida.val(),
-                placa: txtPlaca.val(),
+                idParqueo: idParqueoSeleccionado,
+                nombre: txtNombre.val(),
+                cantidadMaximaVehiculos: txtCantidadMaxima.val(),
+                horaApertura: txtHoraApertura.val(),
+                horaCierre: txtHoraCierre.val(),
                 tarifaHora: txtTarifaHora.val(),
                 tarifaMediaHora: txtTarifaMediaHora.val(),
             },
             datatype: "json",
             cache: true,
             success: function (response) {
-                isEditTiquete = false;
-                idTiqueteSeleccionado = 0;
-                window.location.href = '/Reserva'
+                isEditParqueo = false;
+                idParqueoSeleccionado = 0;
+                window.location.href = '/Parqueo'
             },
             error: function (e) {
                 console.log(e);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Ocurrio un error al crear tiquete, por favor intentelo de nuevo.',
+                    text: 'Ocurrio un error al editar parqueo, por favor intentelo de nuevo.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
@@ -266,12 +269,12 @@ var tiquetes = function () {
 
     }
 
-    const fnRemoveTiquete = function (e) {
+    const fnRemoveParqueo = function (e) {
 
         e.preventDefault();
 
         Swal.fire({
-            title: '¿Desea eliminar el tiquete?',
+            title: `¿Desea eliminar el parqueo ${nombreParqueoSeleccionado}?`,
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Mantener',
@@ -284,20 +287,20 @@ var tiquetes = function () {
                 $.ajax({
                     async: true,
                     type: "GET",
-                    url: initArgs.deleteTiquete,
+                    url: initArgs.deleteParqueo,
                     data: {
-                        idTiquete: idTiqueteSeleccionado
+                        idParqueo: idParqueoSeleccionado
                     },
                     datatype: "json",
                     cache: true,
                     success: function (response) {
-                        window.location.href = '/Reserva'
+                        window.location.href = '/Parqueo'
                     },
                     error: function (e) {
                         console.log(e);
                         Swal.fire({
                             title: 'Error!',
-                            text: 'Ocurrio un error al eliminar tiquete, por favor intentelo de nuevo.',
+                            text: 'Ocurrio un error al eliminar parqueo, por favor intentelo de nuevo.',
                             icon: 'error',
                             confirmButtonText: 'Aceptar'
                         });
@@ -308,7 +311,7 @@ var tiquetes = function () {
         });
     }
 
-    const fnSearchTiquete = function (e) {
+    const fnSearchParqueo = function (e) {
 
         e.preventDefault();
 
@@ -316,20 +319,20 @@ var tiquetes = function () {
         $.ajax({
             async: true,
             type: "GET",
-            url: initArgs.searchTiquete,
+            url: initArgs.searchParqueo,
             data: {
-                valor: txtSearchTiquete.val()
+                valor: txtSearchParqueo.val()
             },
             datatype: "json",
             cache: true,
             success: function (response) {
-                window.location.href = '/Reserva'
+                window.location.href = '/Parqueo'
             },
             error: function (e) {
                 console.log(e);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Ocurrio un error al eliminar tiquete, por favor intentelo de nuevo.',
+                    text: 'Ocurrio un error al buscar parqueo, por favor intentelo de nuevo.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
@@ -338,7 +341,7 @@ var tiquetes = function () {
             
     }
 
-    const fnMostrarTodosTiquete = function (e) {
+    const fnMostrarTodosParqueo = function (e) {
 
         e.preventDefault();
 
@@ -346,18 +349,18 @@ var tiquetes = function () {
         $.ajax({
             async: true,
             type: "GET",
-            url: initArgs.mostrarTiquete,
+            url: initArgs.mostrarParqueo,
             data: null,
             datatype: "json",
             cache: true,
             success: function (response) {
-                window.location.href = '/Reserva'
+                window.location.href = '/Parqueo'
             },
             error: function (e) {
                 console.log(e);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Ocurrio un error al eliminar tiquete, por favor intentelo de nuevo.',
+                    text: 'Ocurrio un error al mostrar todos los parqueos, por favor intentelo de nuevo.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });

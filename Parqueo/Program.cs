@@ -16,7 +16,22 @@ if (!app.Environment.IsDevelopment())
 }
 
 GlobalVariables.Tiquetes = new List<Tiquetes>();
+GlobalVariables.Tiquetes.Add(new Tiquetes()
+{
+    idTiquete = 1,
+    fechaIngreso = DateTime.Now,
+    fechaSalida = DateTime.Now,
+    placa = "123",
+    tarifaHora = 12,
+    tarifaMediaHora = 12
+});
 GlobalVariables.TiquetesFiltrado = new List<Tiquetes>();
+GlobalVariables.isSearchTiquetes = false;
+
+GlobalVariables.Parqueos = new List<Parqueos>();
+GlobalVariables.ParqueosFiltrado = new List<Parqueos>();
+
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

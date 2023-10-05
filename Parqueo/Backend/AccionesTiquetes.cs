@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Parqueo.Backend.Interfaces;
+using Parqueo.Models;
 using Parqueo.Models.Enums;
-using Parqueo.Models.Interfaces;
 
-namespace Parqueo.Models
+namespace Parqueo.Backend
 {
-	public class AccionesTiquetes : IAccionesTiquetes
+    public class AccionesTiquetes : IAccionesTiquetes
     {
 
         public AccionesTiquetes()
@@ -19,7 +20,7 @@ namespace Parqueo.Models
                 // Se agrega el nuevo tiquete
                 GlobalVariables.Tiquetes.Add(tiquete);
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -72,15 +73,15 @@ namespace Parqueo.Models
                     GlobalVariables.TiquetesFiltrado = GlobalVariables.Tiquetes;
                 }
 
-                switch( tipo)
+                switch (tipo)
                 {
                     case EnumSearchTiquetes.Fechas:
                         DateTime fechaSearch = DateTime.Parse(valor);
-                        GlobalVariables.TiquetesFiltrado = (List<Tiquetes>)GlobalVariables.Tiquetes.Where( ticket => ticket.fechaIngreso >= fechaSearch && ticket.fechaSalida <= fechaSearch);
+                        GlobalVariables.TiquetesFiltrado = (List<Tiquetes>)GlobalVariables.Tiquetes.Where(ticket => ticket.fechaIngreso >= fechaSearch && ticket.fechaSalida <= fechaSearch);
                         break;
 
                     case EnumSearchTiquetes.Placa:
-                        GlobalVariables.TiquetesFiltrado = (List<Tiquetes>)GlobalVariables.Tiquetes.Where(ticket => ticket.placa.Equals(valor));
+                        GlobalVariables.TiquetesFiltrado = GlobalVariables.Tiquetes.Where(ticket => ticket.placa.Equals(valor)).ToList();
                         break;
 
                     case EnumSearchTiquetes.Tarifa:
@@ -88,7 +89,7 @@ namespace Parqueo.Models
                         break;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

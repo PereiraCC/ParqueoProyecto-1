@@ -13,7 +13,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Reserva\" />
-    <Folder Include="Models\Interfaces\" />
-    <Folder Include="Models\Enums\" />
   </ItemGroup>
 </Project>
