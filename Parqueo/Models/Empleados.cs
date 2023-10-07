@@ -23,7 +23,7 @@ namespace Parqueo.Models
 
         public string Identificacion { get; set; }
 
-        public string Dirrecion { get; set; }
+        public string Direccion { get; set; }
 
         public string CorreoElectronico { get; set; }
 

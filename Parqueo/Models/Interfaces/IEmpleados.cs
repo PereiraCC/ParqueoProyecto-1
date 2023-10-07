@@ -20,7 +20,7 @@
 
         string Identificacion { get; set; }
 
-        string Dirrecion { get; set; }
+        string Direccion { get; set; }
 
         string CorreoElectronico { get; set; }
 

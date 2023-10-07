@@ -33,45 +33,57 @@ var empleados = function () {
         initArgs = args;
 
         // Se establece los eventos de los botones
-        btnAddEmpleado.click(fnAddEmpleados);
+        btnAddEmpleado.click(fnBotton);
 
-        //$('.btnEdit').click(function (e) {
+        $('.btnEdit').click(function (e) {
+            
+            const editEmpleado = {
+                id: $(this).attr("data-id"),
+                numeroEmpleado: $(this).attr("data-numeroEmpleado"),
+                identificacion: $(this).attr("data-identificacion"),
+                primerNombre: $(this).attr("data-primerNombre"),
+                segundoNombre: $(this).attr("data-segundoNombre"),
+                primerApellido: $(this).attr("data-primerApellido"),
+                segundoApellido: $(this).attr("data-segundoApellido"),
+                fechaIngreso: $(this).attr("data-fechaIngreso"),
+                fechaNacimiento: $(this).attr("data-fechaNacimiento"),
+                direccion: $(this).attr("data-direccion"),
+                correoElectronico: $(this).attr("data-correoElectronico"),
+                telefono: $(this).attr("data-telefono"),
+                personaContacto: $(this).attr("data-personaContacto"),
+            };
+            
+            txtNumeroEmpleado.val(editEmpleado.numeroEmpleado);
+            txtIdentificacion.val(editEmpleado.identificacion);
+            txtPrimerNombre.val(editEmpleado.primerNombre);
+            txtSegundoNombre.val(editEmpleado.segundoNombre);
+            txtPrimerApellido.val(editEmpleado.primerApellido);
+            txtSegundoApellido.val(editEmpleado.segundoApellido);
+            txtFechaIngreso.val(convertToDateTime(editEmpleado.fechaIngreso));
+            txtFechaNacimiento.val(convertToDateTime(editEmpleado.fechaNacimiento));
+            txtDireccion.val(editEmpleado.direccion);
+            txtCorreoElectronico.val(editEmpleado.correoElectronico);
+            txtTelefono.val(editEmpleado.telefono);
+            txtPersonaContacto.val(editEmpleado.personaContacto);
 
-        //    const editParqueo = {
-        //        id: $(this).attr("data-id"),
-        //        nombre: $(this).attr("data-nombre"),
-        //        cantidadMaximaVehiculos: $(this).attr("data-cantidadMaximaVehiculos"),
-        //        horaApertura: $(this).attr("data-horaApertura"),
-        //        horaCierre: $(this).attr("data-horaCierre"),
-        //        tarifaHora: $(this).attr("data-tarifaHora"),
-        //        tarifaMediaHora: $(this).attr("data-tarifaMediaHora")
-        //    };
+            btnAddEmpleado.html("Editar Empleado");
+            isEditEmpleado = true;
+            idEmpleadoSeleccionado = editEmpleado.id;
+        });
 
-        //    txtNombre.val(editParqueo.nombre);
-        //    txtCantidadMaxima.val(editParqueo.cantidadMaximaVehiculos);
-        //    txtHoraApertura.val(convertToDateTimeLocalString(editParqueo.horaApertura));
-        //    txtHoraCierre.val(convertToDateTimeLocalString(editParqueo.horaCierre));
-        //    txtTarifaHora.val(editParqueo.tarifaHora);
-        //    txtTarifaMediaHora.val(editParqueo.tarifaMediaHora);
+        $('.btnDelete').click(function (e) {
+            idEmpleadoSeleccionado = $(this).attr("data-id");
+            identificacionEmpleadoSeleccionado = $(this).attr("data-identificacion");
+            fnRemoveEmpleado(e);
+        });
 
-        //    btnAddParqueo.html("Editar Parqueo");
-        //    isEditParqueo = true;
-        //    idParqueoSeleccionado = editParqueo.id;
-        //});
+        btnSearchEmpleado.click(function (e) {
+            fnSearchEmpleado(e);
+        });
 
-        //$('.btnDelete').click(function (e) {
-        //    idParqueoSeleccionado = $(this).attr("data-id");
-        //    nombreParqueoSeleccionado = $(this).attr("data-nombre");
-        //    fnRemoveParqueo(e);
-        //});
-
-        //btnSearchParqueo.click(function (e) {
-        //    fnSearchParqueo(e);
-        //});
-
-        //btnMostrarTodosParqueo.click(function (e) {
-        //    fnMostrarTodosParqueo(e);
-        //});
+        btnMostrarTodosEmpleado.click(function (e) {
+            fnMostrarTodosEmpleado(e);
+        });
 
     }
 
@@ -80,7 +92,7 @@ var empleados = function () {
         if (!isEditEmpleado) {
             fnAddEmpleados(e);
         } else {
-            fnEditParqueo(e);
+            fnEditEmpleado(e);
         }
 
     }
@@ -107,7 +119,7 @@ var empleados = function () {
                 primerApellido: txtPrimerApellido.val(),
                 segundoApellido: txtSegundoApellido.val(),
                 fechaNacimiento: txtFechaNacimiento.val(),
-                identificacion: txtFechaNacimiento.val(),
+                identificacion: txtIdentificacion.val(),
                 direccion: txtDireccion.val(),
                 correoElectronico: txtCorreoElectronico.val(),
                 telefono: txtTelefono.val(),
@@ -132,7 +144,7 @@ var empleados = function () {
     }
 
     const validationFieldAdd = function (e) {
-        console.log(txtIdentificacion.val())
+        
         let msjError = '';
 
         if (txtNumeroEmpleado.val() == 0) {
@@ -179,75 +191,16 @@ var empleados = function () {
 
     }
 
-    const convertToDateTimeLocalString = function (date) {
+    const convertToDateTime = function (date) {
 
-        const newDate = date.split(' ');
+        const newDate = date.split(' ')[0];
 
-        const dateOficial = new Date(newDate[0] + ' ' + newDate[1]);
+        const dateParse = newDate.split('/');
 
-        const year = dateOficial.getFullYear();
-        const month = (dateOficial.getMonth() + 1).toString().padStart(2, "0");
-        const day = dateOficial.getDate().toString().padStart(2, "0");
-        let hours = dateOficial.getHours().toString().padStart(2, "0");
-        const minutes = dateOficial.getMinutes().toString().padStart(2, "0");
-        
-        if (newDate[2] == 'p.') {
-            
-            switch (hours) {
-                case '01':
-                    hours = '13'
-                    break;
-
-                case '02':
-                    hours = '14'
-                    break;
-
-                case '03':
-                    hours = '15'
-                    break;
-
-                case '04':
-                    hours = '16'
-                    break;
-
-                case '05':
-                    hours = '17'
-                    break;
-
-                case '06':
-                    hours = '18'
-                    break;
-
-                case '07':
-                    hours = '19'
-                    break;
-
-                case '08':
-                    hours = '20'
-                    break;
-
-                case '09':
-                    hours = '21'
-                    break;
-
-                case '10':
-                    hours = '22'
-                    break;
-
-                case '11':
-                    hours = '23'
-                    break;
-
-                case '12':
-                    hours = '00'
-                    break;
-            }
-        }
-
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
+        return `${dateParse[2]}-${dateParse[1]}-${dateParse[0]}`;
     }
 
-    const fnEditParqueo = function (e) {
+    const fnEditEmpleado = function (e) {
 
         e.preventDefault();
 
@@ -260,28 +213,34 @@ var empleados = function () {
         $.ajax({
             async: true,
             type: "GET",
-            url: initArgs.editParqueo,
+            url: initArgs.editEmpleado,
             data: {
-                idParqueo: idParqueoSeleccionado,
-                nombre: txtNombre.val(),
-                cantidadMaximaVehiculos: txtCantidadMaxima.val(),
-                horaApertura: txtHoraApertura.val(),
-                horaCierre: txtHoraCierre.val(),
-                tarifaHora: txtTarifaHora.val(),
-                tarifaMediaHora: txtTarifaMediaHora.val(),
+                idEmpleado: idEmpleadoSeleccionado,
+                numeroEmpleado: txtNumeroEmpleado.val(),
+                fechaIngreso: txtFechaIngreso.val(),
+                primerNombre: txtPrimerNombre.val(),
+                segundoNombre: txtSegundoNombre.val(),
+                primerApellido: txtPrimerApellido.val(),
+                segundoApellido: txtSegundoApellido.val(),
+                fechaNacimiento: txtFechaNacimiento.val(),
+                identificacion: txtFechaNacimiento.val(),
+                direccion: txtDireccion.val(),
+                correoElectronico: txtCorreoElectronico.val(),
+                telefono: txtTelefono.val(),
+                personaContacto: txtPersonaContacto.val()
             },
             datatype: "json",
             cache: true,
             success: function (response) {
-                isEditParqueo = false;
-                idParqueoSeleccionado = 0;
-                window.location.href = '/Parqueo'
+                isEditEmpleado = false;
+                idEmpleadoSeleccionado = 0;
+                window.location.href = '/Empleado'
             },
             error: function (e) {
                 console.log(e);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Ocurrio un error al editar parqueo, por favor intentelo de nuevo.',
+                    text: 'Ocurrio un error al editar empleado, por favor intentelo de nuevo.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
@@ -290,12 +249,12 @@ var empleados = function () {
 
     }
 
-    const fnRemoveParqueo = function (e) {
+    const fnRemoveEmpleado = function (e) {
 
         e.preventDefault();
 
         Swal.fire({
-            title: `¿Desea eliminar el parqueo ${nombreParqueoSeleccionado}?`,
+            title: `¿Desea eliminar el empleado ${identificacionEmpleadoSeleccionado}?`,
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Mantener',
@@ -308,20 +267,20 @@ var empleados = function () {
                 $.ajax({
                     async: true,
                     type: "GET",
-                    url: initArgs.deleteParqueo,
+                    url: initArgs.deleteEmpleado,
                     data: {
-                        idParqueo: idParqueoSeleccionado
+                        idEmpleado: idEmpleadoSeleccionado
                     },
                     datatype: "json",
                     cache: true,
                     success: function (response) {
-                        window.location.href = '/Parqueo'
+                        window.location.href = '/Empleado'
                     },
                     error: function (e) {
                         console.log(e);
                         Swal.fire({
                             title: 'Error!',
-                            text: 'Ocurrio un error al eliminar parqueo, por favor intentelo de nuevo.',
+                            text: 'Ocurrio un error al eliminar empleado, por favor intentelo de nuevo.',
                             icon: 'error',
                             confirmButtonText: 'Aceptar'
                         });
@@ -332,7 +291,7 @@ var empleados = function () {
         });
     }
 
-    const fnSearchParqueo = function (e) {
+    const fnSearchEmpleado = function (e) {
 
         e.preventDefault();
 
@@ -340,20 +299,20 @@ var empleados = function () {
         $.ajax({
             async: true,
             type: "GET",
-            url: initArgs.searchParqueo,
+            url: initArgs.searchEmpleado,
             data: {
-                valor: txtSearchParqueo.val()
+                valor: txtValorBusqueda.val()
             },
             datatype: "json",
             cache: true,
             success: function (response) {
-                window.location.href = '/Parqueo'
+                window.location.href = '/Empleado'
             },
             error: function (e) {
                 console.log(e);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Ocurrio un error al buscar parqueo, por favor intentelo de nuevo.',
+                    text: 'Ocurrio un error al buscar empleado, por favor intentelo de nuevo.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
@@ -362,7 +321,7 @@ var empleados = function () {
             
     }
 
-    const fnMostrarTodosParqueo = function (e) {
+    const fnMostrarTodosEmpleado = function (e) {
 
         e.preventDefault();
 
@@ -370,18 +329,18 @@ var empleados = function () {
         $.ajax({
             async: true,
             type: "GET",
-            url: initArgs.mostrarParqueo,
+            url: initArgs.mostrarEmpleado,
             data: null,
             datatype: "json",
             cache: true,
             success: function (response) {
-                window.location.href = '/Parqueo'
+                window.location.href = '/Empleado'
             },
             error: function (e) {
                 console.log(e);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Ocurrio un error al mostrar todos los parqueos, por favor intentelo de nuevo.',
+                    text: 'Ocurrio un error al mostrar todos los empleados, por favor intentelo de nuevo.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });

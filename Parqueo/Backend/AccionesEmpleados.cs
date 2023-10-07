@@ -58,7 +58,7 @@ namespace Parqueo.Backend
                     GlobalVariables.Empleados[indexEmpleado].SegundoApellido = empleado.SegundoApellido;
                     GlobalVariables.Empleados[indexEmpleado].FechaNacimiento = empleado.FechaNacimiento;
                     GlobalVariables.Empleados[indexEmpleado].Identificacion = empleado.Identificacion;
-                    GlobalVariables.Empleados[indexEmpleado].Dirrecion = empleado.Dirrecion;
+                    GlobalVariables.Empleados[indexEmpleado].Direccion = empleado.Direccion;
                     GlobalVariables.Empleados[indexEmpleado].CorreoElectronico = empleado.CorreoElectronico;
                     GlobalVariables.Empleados[indexEmpleado].Telefono = empleado.Telefono;
                     GlobalVariables.Empleados[indexEmpleado].PersonaContacto = empleado.PersonaContacto;
@@ -87,7 +87,7 @@ namespace Parqueo.Backend
                         break;
 
                     case EnumSearchEmpleados.Nombre:
-                        GlobalVariables.EmpleadosFiltrado = GlobalVariables.Empleados.Where(empleado => empleado.PrimerNombre.Contains(valor) || empleado.SegundoNombre.Contains(valor)).ToList();
+                        GlobalVariables.EmpleadosFiltrado = GlobalVariables.Empleados.Where(empleado => empleado.PrimerNombre.Contains(valor)).ToList();
                         break;
 
                     case EnumSearchEmpleados.Identificacion:
