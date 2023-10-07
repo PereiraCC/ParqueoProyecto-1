@@ -76,9 +76,8 @@ namespace Parqueo.Backend
 
                 switch (tipo)
                 {
-                    case EnumSearchParqueos.Hora:
-                        DateTime fechaSearch = DateTime.Parse(valor);
-                        GlobalVariables.ParqueosFiltrado = GlobalVariables.Parqueos.Where(parqueo => parqueo.HoraApertura >= fechaSearch && parqueo.HoraCierre <= fechaSearch).ToList();
+                    case EnumSearchParqueos.CantididadVehiculos:
+                        GlobalVariables.ParqueosFiltrado = GlobalVariables.Parqueos.Where(parqueo => parqueo.CantidadMaximaVehiculos.ToString() == valor).ToList();
                         break;
 
                     case EnumSearchParqueos.Nombre:

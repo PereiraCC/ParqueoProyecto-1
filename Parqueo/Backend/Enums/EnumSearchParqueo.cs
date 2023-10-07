@@ -4,7 +4,7 @@ namespace Parqueo.Models.Enums
 	public enum EnumSearchParqueos
 	{
 		Nombre,
-		Hora,
+		CantididadVehiculos,
 		Tarifa
 	}
 }

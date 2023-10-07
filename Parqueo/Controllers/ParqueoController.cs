@@ -61,9 +61,24 @@ public class ParqueoController : Controller
     }
 
     [HttpGet]
-    public ActionResult searchParqueo(string valor)
+    public ActionResult searchParqueo(string valor, string filtro)
     {
-        accionesParqueos.searchValue(valor, Models.Enums.EnumSearchParqueos.Nombre);
+        Models.Enums.EnumSearchParqueos enumSearchParqueos = Models.Enums.EnumSearchParqueos.Nombre;
+        switch (filtro)
+        {
+            case "1":
+                enumSearchParqueos = Models.Enums.EnumSearchParqueos.Nombre;
+                break;
+
+            case "2":
+                enumSearchParqueos = Models.Enums.EnumSearchParqueos.CantididadVehiculos;
+                break;
+
+            case "3":
+                enumSearchParqueos = Models.Enums.EnumSearchParqueos.Tarifa;
+                break;
+        }
+        accionesParqueos.searchValue(valor, enumSearchParqueos);
 
         GlobalVariables.isSearchParqueos = true;
 

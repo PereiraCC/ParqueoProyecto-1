@@ -36,65 +36,21 @@
 
             <div class="row mb-2">
 
-                <div class="col-9">
+                <div class="col-3">
                     <div class="form-group">
-                        <label for="txtNombreParqueos">Nombre</label>
-                        <input type="text" class="form-control" id="txtNombreParqueos">
+                        <label for="cboFiltrosBusquedaParqueos">Filtros Busqueda</label>
+                        <select class="form-select" aria-label="Disabled select example" id="cboFiltrosBusquedaParqueos">
+                          <option value="0" selected>Seleccione</option>
+                          <option value="1">Nombre</option>
+                          <option value="2">Cantididad Vehiculos</option>
+                          <option value="3">Tarifa</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-3">
                     <div class="form-group">
-                        <label for="txtCantidadParqueos">Cantidad Maxima Vehiculos</label>
-                        <input type="number" class="form-control" id="txtCantidadParqueos">
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row mb-3">
-
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="txtHoraAperturaParqueos">Hora Apertura</label>
-                        <input type="datetime-local" class="form-control" id="txtHoraAperturaParqueos">
-                    </div>
-                </div>
-
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="txtHoraCierreParqueos">Hora Cierre</label>
-                        <input type="datetime-local" class="form-control" id="txtHoraCierreParqueos">
-                    </div>
-                </div>
-
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="txtTarifaHoraParqueos">Tarifa por Hora</label>
-                        <input type="number" class="form-control" id="txtTarifaHoraParqueos">
-                    </div>
-                </div>
-
-                <div class="col-3">
-                    <div class="form-group">
-                        <label for="txtTarifaMediaHoraParqueos">Tarifa por Media Hora</label>
-                        <input type="number" class="form-control" id="txtTarifaMediaHoraParqueos">
-                    </div>
-                </div>
-
-            </div>
-
-            <button id="btnAgregarParqueo" class="btn btn-primary">Crear Parqueo</button>
-
-        </div>
-
-        <div class="container mb-3">
-
-            <div class="row mb-2">
-
-                <div class="col-5">
-                    <div class="form-group">
-                        <label for="txtValorBusquedaParqueos">Busqueda Parqueos</label>
+                        <label for="txtValorBusquedaParqueos">Descripcion</label>
                         <input type="text" class="form-control" id="txtValorBusquedaParqueos">
                     </div>
                 </div>
@@ -105,6 +61,10 @@
 
                 <div class="col-2 mt-4">
                     <button id="btnMostrarTodosParqueos" class="btn btn-info">Mostrar Todos</button>
+                </div>
+
+                <div class="col-2 mt-4 ml-5">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalParqueo">Crear Parqueo</button>
                 </div>
 
             </div>
@@ -122,47 +82,49 @@
                         <th width="13%">Hora Cierre</th>
                         <th width="13%">Tarifa Hora</th>
                         <th width="13%">Tarida Media Hora</th>
-                        <th width="40%">Acciones</th>
+                        <th width="50%">Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="tablebodyTiquetes">
                     @{
                         foreach( Parqueos parqueo in @Model ){
-                                <tr>
-                                    <td>@parqueo.idParqueo</td>
-                                    <td>@parqueo.Nombre</td>
-                                    <td>@parqueo.CantidadMaximaVehiculos</td>
-                                    <td>@parqueo.HoraApertura</td>
-                                    <td>@parqueo.HoraCierre</td>
-                                    <td>@parqueo.TarifaHora</td>
-                                    <td>@parqueo.TarifaMediaHora</td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <button type="button" class="btn btn-info btnEdit"
-                                                    data-id="@parqueo.idParqueo"
-                                                    data-nombre="@parqueo.Nombre"
-                                                    data-cantidadMaximaVehiculos="@parqueo.CantidadMaximaVehiculos"
-                                                    data-horaApertura="@parqueo.HoraApertura"
-                                                    data-horaCierre="@parqueo.HoraCierre"
-                                                    data-tarifaHora="@parqueo.TarifaHora"
-                                                    data-tarifaMediaHora="@parqueo.TarifaMediaHora"
-                                                >
-                                                    Editar
-                                                </button>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <button type="button" class="btn btn-danger btnDelete" 
-                                                    data-id="@parqueo.idParqueo"
-                                                    data-nombre="@parqueo.Nombre"
-                                                >
-                                                    Eliminar
-                                                </button>
-                                            </div>
+                            <tr>
+                                <td>@parqueo.idParqueo</td>
+                                <td>@parqueo.Nombre</td>
+                                <td>@parqueo.CantidadMaximaVehiculos</td>
+                                <td>@parqueo.HoraApertura</td>
+                                <td>@parqueo.HoraCierre</td>
+                                <td>@parqueo.TarifaHora</td>
+                                <td>@parqueo.TarifaMediaHora</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <button type="button" class="btn btn-info btnEdit"
+                                                data-id="@parqueo.idParqueo"
+                                                data-nombre="@parqueo.Nombre"
+                                                data-cantidadMaximaVehiculos="@parqueo.CantidadMaximaVehiculos"
+                                                data-horaApertura="@parqueo.HoraApertura"
+                                                data-horaCierre="@parqueo.HoraCierre"
+                                                data-tarifaHora="@parqueo.TarifaHora"
+                                                data-tarifaMediaHora="@parqueo.TarifaMediaHora"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#modalParqueo"
+                                            >
+                                                Ver y Editar
+                                            </button>
                                         </div>
-                                    </td>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-danger btnDelete" 
+                                                data-id="@parqueo.idParqueo"
+                                                data-nombre="@parqueo.Nombre"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
                                        
-                                </tr>
+                            </tr>
                         }
                     }
                 </tbody>
@@ -170,4 +132,85 @@
         </div>
 
 
+    </div>
+
+    <!-- Modal -->
+    <div class="modal mt-5" id="modalParqueo">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                      <div class="text-center">
+                          <h4 class="modal-title" id="lblTitleModal" >Agregar Parqueo</h4>
+                      </div>
+                  </div>
+
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                      
+                         <div class="container mb-3">
+
+                            <div class="row mb-2">
+
+                                <div class="col-9">
+                                    <div class="form-group">
+                                        <label for="txtNombreParqueos">Nombre</label>
+                                        <input type="text" class="form-control" id="txtNombreParqueos">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="txtCantidadParqueos">Cantidad Maxima Vehiculos</label>
+                                        <input type="number" class="form-control" id="txtCantidadParqueos">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="txtHoraAperturaParqueos">Hora Apertura</label>
+                                        <input type="datetime-local" class="form-control" id="txtHoraAperturaParqueos">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="txtHoraCierreParqueos">Hora Cierre</label>
+                                        <input type="datetime-local" class="form-control" id="txtHoraCierreParqueos">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="txtTarifaHoraParqueos">Tarifa por Hora</label>
+                                        <input type="number" class="form-control" id="txtTarifaHoraParqueos">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="txtTarifaMediaHoraParqueos">Tarifa por Media Hora</label>
+                                        <input type="number" class="form-control" id="txtTarifaMediaHoraParqueos">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                        <button id="btnAgregarParqueo" class="btn btn-primary">Crear Parqueo</button>
+                        <button id="btnCloseModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+
+            </div>
+        </div>
     </div>

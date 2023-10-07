@@ -17,11 +17,16 @@ var parqueos = function () {
     var txtTarifaHora = $("#txtTarifaHoraParqueos");
     var txtTarifaMediaHora = $("#txtTarifaMediaHoraParqueos");
     var txtSearchParqueo = $("#txtValorBusquedaParqueos");
+    var cboFiltrosBusqueda = $('#cboFiltrosBusquedaParqueos');
+
+    //label
+    var lblTitleModal = $('#lblTitleModal');
 
     // Botones
     var btnAddParqueo = $('#btnAgregarParqueo');
     var btnSearchParqueo = $('#btnBuscarParqueos');
     var btnMostrarTodosParqueo = $('#btnMostrarTodosParqueos');
+    var btnCloseModal = $('#btnCloseModal');
 
     var init = function (args) {
 
@@ -55,6 +60,7 @@ var parqueos = function () {
             btnAddParqueo.html("Editar Parqueo");
             isEditParqueo = true;
             idParqueoSeleccionado = editParqueo.id;
+            lblTitleModal.html("Editar Parqueo");
         });
 
         $('.btnDelete').click(function (e) {
@@ -69,6 +75,10 @@ var parqueos = function () {
 
         btnMostrarTodosParqueo.click(function (e) {
             fnMostrarTodosParqueo(e);
+        });
+
+        btnCloseModal.click(function (e) {
+            fnCleanModal(e);
         });
 
     }
@@ -87,16 +97,16 @@ var parqueos = function () {
         
         e.preventDefault();
 
-        if (cantidadParqueos == 1) {
-            Swal.fire({
-                title: 'Advertencia',
-                text: 'Ya existe un parqueo existente. No se puede agregar más de un parqueo.',
-                icon: 'warning',
-                confirmButtonText: 'Aceptar'
-            });
+        //if (cantidadParqueos == 1) {
+        //    Swal.fire({
+        //        title: 'Advertencia',
+        //        text: 'Ya existe un parqueo existente. No se puede agregar más de un parqueo.',
+        //        icon: 'warning',
+        //        confirmButtonText: 'Aceptar'
+        //    });
 
-            return;
-        }
+        //    return;
+        //}
 
         // Se validan los campos
         if (!validationFieldAdd()) {
@@ -330,13 +340,25 @@ var parqueos = function () {
 
         e.preventDefault();
 
+        if (txtSearchParqueo.val() == '' || cboFiltrosBusqueda.val() == '0') {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Seleccione el filtro a buscar y el valor de busqueda.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+
+            return;
+        }
+
         // Se envia la peticion atravez de Ajax
         $.ajax({
             async: true,
             type: "GET",
             url: initArgs.searchParqueo,
             data: {
-                valor: txtSearchParqueo.val()
+                valor: txtSearchParqueo.val(),
+                filtro: cboFiltrosBusqueda.val()
             },
             datatype: "json",
             cache: true,
@@ -381,6 +403,24 @@ var parqueos = function () {
                 });
             }
         });
+
+    }
+
+    const fnCleanModal = function (e) {
+
+        e.preventDefault();
+
+        txtNombre.val('');
+        txtCantidadMaxima.val('');
+        txtHoraApertura.val('');
+        txtHoraCierre.val('');
+        txtTarifaHora.val('');
+        txtTarifaMediaHora.val('');
+
+        btnAddParqueo.html("Agregar Parqueo");
+        isEditParqueo = false;
+        idParqueoSeleccionado = 0;
+        lblTitleModal.html("Agregar Parqueo");
 
     }
 
