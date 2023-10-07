@@ -31,7 +31,8 @@ GlobalVariables.isSearchTiquetes = false;
 GlobalVariables.Parqueos = new List<Parqueos>();
 GlobalVariables.ParqueosFiltrado = new List<Parqueos>();
 
-
+GlobalVariables.Empleados = new List<Empleados>();
+GlobalVariables.EmpleadosFiltrado = new List<Empleados>();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

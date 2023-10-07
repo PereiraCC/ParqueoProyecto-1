@@ -16,5 +16,11 @@ namespace Parqueo.Models
 
         public static bool isSearchParqueos { get; set; }
 
+        public static List<Empleados> Empleados { get; set; }
+
+        public static List<Empleados> EmpleadosFiltrado { get; set; }
+
+        public static bool isSearchEmpleados { get; set; }
+
     }
 }

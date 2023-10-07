@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "C+/ohZ2cMvmPMRS9oAMyYr7A0cJtGjh1ofs6hewUFpA=",
+  "Hash": "TjCFCV3C4SLKsQ7y6MY2WsszsvyDEG4ZGUaIOt0yFk0=",
   "Source": "Parqueo",
   "BasePath": "_content/Parqueo",
   "Mode": "Default",
@@ -100,6 +100,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\wwwroot\\js\\empleados.js",
+      "SourceId": "Parqueo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\wwwroot\\",
+      "BasePath": "_content/Parqueo",
+      "RelativePath": "js/empleados.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\empleados.js"
     },
     {
       "Identity": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\wwwroot\\js\\parqueos.js",

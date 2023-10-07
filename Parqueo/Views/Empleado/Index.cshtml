@@ -1,0 +1,236 @@
+﻿@model List<Empleados>
+@{
+    ViewData["Title"] = "Empleado";
+    
+}
+
+@section Scripts {
+    <script src="~/js/empleados.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        empleados.Init({
+            addEmpleado: '@Url.Action("addEmpleado", "Empleado")',
+            editEmpleado: '@Url.Action("editEmpleado", "Empleado")',
+            deleteEmpleado: '@Url.Action("removeEmpleado", "Empleado")',
+            searchEmpleado: '@Url.Action("searchEmpleado", "Empleado")',
+            mostrarEmpleado: '@Url.Action("mostrarTodos", "Empleado")'
+        });
+    });
+</script>
+
+
+    <div class="container border border-secondary rounded mt-3 px-5">
+
+        <div class="container">
+            <div class="text-center">
+                <h1 class="display-4 font-weight-bold">Empleados</h1>
+            </div>
+        </div>
+
+        <div class="container mb-3">
+
+            <div class="row mb-2">
+
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="txtNumeroEmpleadoEmpleado">Numero Empleado</label>
+                        <input type="number" class="form-control" id="txtNumeroEmpleadoEmpleado">
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="txtIdentificacionEmpleado">Identificacion</label>
+                        <input type="text" class="form-control" id="txtIdentificacionEmpleado">
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="txtFechaIngresoEmpleado">Fecha Ingreso</label>
+                        <input type="date" class="form-control" id="txtFechaIngresoEmpleado">
+                    </div>
+                </div>
+
+                
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtPrimerNombreEmpleados">Primer Nombre</label>
+                        <input type="text" class="form-control" id="txtPrimerNombreEmpleados">
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtSegundoNombreEmpleados">Segundo Nombre</label>
+                        <input type="text" class="form-control" id="txtSegundoNombreEmpleados">
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtPrimerApellidoEmpleados">Primer Apellido</label>
+                        <input type="text" class="form-control" id="txtPrimerApellidoEmpleados">
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtSegundoApellidoEmpleados">Segundo Apellido</label>
+                        <input type="text" class="form-control" id="txtSegundoApellidoEmpleados">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtFechaNacimientoEmpleado">Fecha Nacimiento</label>
+                        <input type="date" class="form-control" id="txtFechaNacimientoEmpleado">
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtCorreoElectronicoEmpleados">Correo Electronico</label>
+                        <input type="text" class="form-control" id="txtCorreoElectronicoEmpleados">
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtTelefonoEmpleados">Telefono</label>
+                        <input type="text" class="form-control" id="txtTelefonoEmpleados">
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtPersonaContactoEmpleados">Persona Contacto</label>
+                        <input type="text" class="form-control" id="txtPersonaContactoEmpleados">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="txtDireccionEmpleados">Direccion</label>
+                        <input type="text" class="form-control" id="txtDireccionEmpleados">
+                    </div>
+                </div>
+
+            </div>
+
+            <button id="btnAgregarEmpleado" class="btn btn-primary">Crear Empleado</button>
+
+        </div>
+
+        <div class="container mb-3">
+
+            <div class="row mb-2">
+
+                <div class="col-5">
+                    <div class="form-group">
+                        <label for="txtValorBusquedaEmpleados">Busqueda Empleados</label>
+                        <input type="text" class="form-control" id="txtValorBusquedaEmpleados">
+                    </div>
+                </div>
+
+                <div class="col-1 mt-4">
+                    <button id="btnBuscarEmpleados" class="btn btn-success">Buscar</button>
+                </div>
+
+                <div class="col-2 mt-4">
+                    <button id="btnMostrarTodosEmpleados" class="btn btn-info">Mostrar Todos</button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div>
+            <table id="tableEmpleados" class="table table-striped" style="width:100%">
+                <thead class="table-success">
+                    <tr>
+                        <th width="4%">Id</th>
+                        <th width="10%">Numero Empleado</th>
+                        <th width="10%">Identificacion</th>
+                        <th width="10%">Nombre</th>
+                        <th width="13%">Fecha Ingreso</th>
+                        <th width="13%">Fecha Nacimiento</th>
+                        <th width="13%">Direccion</th>
+                        <th width="13%">Correo Electronico</th>
+                        <th width="13%">Telefono</th>
+                        <th width="13%">Persona Contacto</th>
+                        <th width="40%">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach( Empleados empleado in @Model ){
+                            <tr>
+                                <td>@empleado.IdEmpleado</td>
+                                <td>@empleado.NumeroEmpleado</td>
+                                <td>@empleado.Identificacion</td>
+                                <td>@empleado.PrimerNombre + @empleado.SegundoNombre + @empleado.PrimerApellido + @empleado.SegundoApellido</td>
+                                <td>@empleado.FechaIngreso</td>
+                                <td>@empleado.FechaNacimiento</td>
+                                <td>@empleado.Dirrecion</td>
+                                <td>@empleado.CorreoElectronico</td>
+                                <td>@empleado.Telefono</td>
+                                <td>@empleado.PersonaContacto</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-info btnEdit"
+                                                data-id="@empleado.IdEmpleado"
+                                                data-numeroEmpleado="@empleado.NumeroEmpleado"
+                                                data-identificacion="@empleado.Identificacion"
+                                                data-primerNombre="@empleado.PrimerNombre"
+                                                data-segundoNombre="@empleado.SegundoNombre"
+                                                data-primerApellido="@empleado.PrimerApellido"
+                                                data-segundoApellido="@empleado.SegundoApellido"
+                                                data-fechaIngreso="@empleado.FechaIngreso"
+                                                data-fechaNacimiento="@empleado.FechaNacimiento"
+                                                data-direccion="@empleado.Dirrecion"
+                                                data-correoElectronico="@empleado.CorreoElectronico"
+                                                data-telefono="@empleado.Telefono"
+                                                data-personaContacto="@empleado.PersonaContacto"
+                                            >
+                                                Editar
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-danger btnDelete" 
+                                                data-id="@empleado.IdEmpleado"
+                                                data-nombre="@empleado.Identificacion"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                                       
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
