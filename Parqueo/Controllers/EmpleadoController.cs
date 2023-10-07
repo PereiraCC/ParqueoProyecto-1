@@ -61,9 +61,24 @@ public class EmpleadoController : Controller
     }
 
     [HttpGet]
-    public ActionResult searchEmpleado(string valor)
+    public ActionResult searchEmpleado(string valor, string filtro)
     {
-        accionesEmpleados.searchValue(valor, Models.Enums.EnumSearchEmpleados.Nombre);
+        Models.Enums.EnumSearchEmpleados enumSearchEmpleados = Models.Enums.EnumSearchEmpleados.Nombre;
+        switch (filtro)
+        {
+            case "1":
+                enumSearchEmpleados = Models.Enums.EnumSearchEmpleados.Numero;
+                break;
+
+            case "2":
+                enumSearchEmpleados = Models.Enums.EnumSearchEmpleados.Nombre;
+                break;
+
+            case "3":
+                enumSearchEmpleados = Models.Enums.EnumSearchEmpleados.Identificacion;
+                break;
+        }
+        accionesEmpleados.searchValue(valor, enumSearchEmpleados);
 
         GlobalVariables.isSearchEmpleados = true;
 

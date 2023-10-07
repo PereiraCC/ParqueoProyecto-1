@@ -22,11 +22,16 @@ var empleados = function () {
     var txtPersonaContacto = $("#txtPersonaContactoEmpleados");
     var txtDireccion = $("#txtDireccionEmpleados");
     var txtValorBusqueda = $("#txtValorBusquedaEmpleados");
+    var cboFiltrosBusqueda = $('#cboFiltrosBusquedaEmpleados');
+
+    //label
+    var lblTitleModal = $('#lblTitleModal');
 
     // Botones
     var btnAddEmpleado = $('#btnAgregarEmpleado');
     var btnSearchEmpleado = $('#btnBuscarEmpleados');
     var btnMostrarTodosEmpleado = $('#btnMostrarTodosEmpleados');
+    var btnCloseModal = $('#btnCloseModal');
 
     var init = function (args) {
 
@@ -69,6 +74,7 @@ var empleados = function () {
             btnAddEmpleado.html("Editar Empleado");
             isEditEmpleado = true;
             idEmpleadoSeleccionado = editEmpleado.id;
+            lblTitleModal.html("Editar Empleado");
         });
 
         $('.btnDelete').click(function (e) {
@@ -83,6 +89,10 @@ var empleados = function () {
 
         btnMostrarTodosEmpleado.click(function (e) {
             fnMostrarTodosEmpleado(e);
+        });
+
+        btnCloseModal.click(function (e) {
+            fnCleanModal(e);
         });
 
     }
@@ -223,7 +233,7 @@ var empleados = function () {
                 primerApellido: txtPrimerApellido.val(),
                 segundoApellido: txtSegundoApellido.val(),
                 fechaNacimiento: txtFechaNacimiento.val(),
-                identificacion: txtFechaNacimiento.val(),
+                identificacion: txtIdentificacion.val(),
                 direccion: txtDireccion.val(),
                 correoElectronico: txtCorreoElectronico.val(),
                 telefono: txtTelefono.val(),
@@ -295,13 +305,25 @@ var empleados = function () {
 
         e.preventDefault();
 
+        if (txtValorBusqueda.val() == '' || cboFiltrosBusqueda.val() == '0') {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Seleccione el filtro a buscar y el valor de busqueda.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+
+            return;
+        }
+
         // Se envia la peticion atravez de Ajax
         $.ajax({
             async: true,
             type: "GET",
             url: initArgs.searchEmpleado,
             data: {
-                valor: txtValorBusqueda.val()
+                valor: txtValorBusqueda.val(),
+                filtro: cboFiltrosBusqueda.val()
             },
             datatype: "json",
             cache: true,
@@ -346,6 +368,30 @@ var empleados = function () {
                 });
             }
         });
+
+    }
+
+    const fnCleanModal = function (e) {
+
+        e.preventDefault();
+
+        txtNumeroEmpleado.val('');
+        txtIdentificacion.val('');
+        txtPrimerNombre.val('');
+        txtSegundoNombre.val('');
+        txtPrimerApellido.val('');
+        txtSegundoApellido.val('');
+        txtFechaIngreso.val('');
+        txtFechaNacimiento.val('');
+        txtDireccion.val('');
+        txtCorreoElectronico.val('');
+        txtTelefono.val('');
+        txtPersonaContacto.val('');
+
+        btnAddEmpleado.html("Agregar Empleado");
+        isEditEmpleado = false;
+        idEmpleadoSeleccionado = 0;
+        lblTitleModal.html("Agregar Empleado");
 
     }
 
