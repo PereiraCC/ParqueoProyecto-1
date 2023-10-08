@@ -49,11 +49,11 @@ var parqueos = function () {
                 tarifaHora: $(this).attr("data-tarifaHora"),
                 tarifaMediaHora: $(this).attr("data-tarifaMediaHora")
             };
-
+            
             txtNombre.val(editParqueo.nombre);
             txtCantidadMaxima.val(editParqueo.cantidadMaximaVehiculos);
-            txtHoraApertura.val(convertToDateTimeLocalString(editParqueo.horaApertura));
-            txtHoraCierre.val(convertToDateTimeLocalString(editParqueo.horaCierre));
+            txtHoraApertura.val(getHour(editParqueo.horaApertura));
+            txtHoraCierre.val(getHour(editParqueo.horaCierre));
             txtTarifaHora.val(editParqueo.tarifaHora);
             txtTarifaMediaHora.val(editParqueo.tarifaMediaHora);
 
@@ -94,19 +94,19 @@ var parqueos = function () {
     }
 
     const fnAddParqueo = function (e) {
-        
+
         e.preventDefault();
 
-        //if (cantidadParqueos == 1) {
-        //    Swal.fire({
-        //        title: 'Advertencia',
-        //        text: 'Ya existe un parqueo existente. No se puede agregar más de un parqueo.',
-        //        icon: 'warning',
-        //        confirmButtonText: 'Aceptar'
-        //    });
+        if (cantidadParqueos == 1) {
+            Swal.fire({
+                title: 'Advertencia',
+                text: 'Ya existe un parqueo existente. No se puede agregar más de un parqueo.',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
 
-        //    return;
-        //}
+            return;
+        }
 
         // Se validan los campos
         if (!validationFieldAdd()) {
@@ -183,72 +183,9 @@ var parqueos = function () {
 
     }
 
-    const convertToDateTimeLocalString = function (date) {
-
+    const getHour = function (date) {
         const newDate = date.split(' ');
-
-        const dateOficial = new Date(newDate[0] + ' ' + newDate[1]);
-
-        const year = dateOficial.getFullYear();
-        const month = (dateOficial.getMonth() + 1).toString().padStart(2, "0");
-        const day = dateOficial.getDate().toString().padStart(2, "0");
-        let hours = dateOficial.getHours().toString().padStart(2, "0");
-        const minutes = dateOficial.getMinutes().toString().padStart(2, "0");
-        
-        if (newDate[2] == 'p.') {
-            
-            switch (hours) {
-                case '01':
-                    hours = '13'
-                    break;
-
-                case '02':
-                    hours = '14'
-                    break;
-
-                case '03':
-                    hours = '15'
-                    break;
-
-                case '04':
-                    hours = '16'
-                    break;
-
-                case '05':
-                    hours = '17'
-                    break;
-
-                case '06':
-                    hours = '18'
-                    break;
-
-                case '07':
-                    hours = '19'
-                    break;
-
-                case '08':
-                    hours = '20'
-                    break;
-
-                case '09':
-                    hours = '21'
-                    break;
-
-                case '10':
-                    hours = '22'
-                    break;
-
-                case '11':
-                    hours = '23'
-                    break;
-
-                case '12':
-                    hours = '00'
-                    break;
-            }
-        }
-
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
+        return newDate[1];
     }
 
     const fnEditParqueo = function (e) {
