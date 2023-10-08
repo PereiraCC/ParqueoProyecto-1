@@ -17,7 +17,13 @@ public class ReservaController : Controller
 
     public IActionResult Index()
     {
-        return View( (GlobalVariables.isSearchTiquetes) ? GlobalVariables.TiquetesFiltrado : GlobalVariables.Tiquetes);
+        ViewTiquetes viewTiquetes = new ViewTiquetes( ) {
+            TarifaHora = (GlobalVariables.Parqueos.Count > 0) ? GlobalVariables.Parqueos.FirstOrDefault().TarifaHora : 0,
+            TarifaMediaHora = (GlobalVariables.Parqueos.Count > 0) ? GlobalVariables.Parqueos.FirstOrDefault().TarifaMediaHora : 0,
+            cantidadParqueo = GlobalVariables.Parqueos.Count,
+            tiquetes = (GlobalVariables.isSearchTiquetes) ? GlobalVariables.TiquetesFiltrado : GlobalVariables.Tiquetes
+        };
+        return View(viewTiquetes);
     }
 
     [HttpGet]
@@ -36,7 +42,7 @@ public class ReservaController : Controller
 
         GlobalVariables.isSearchTiquetes = false;
 
-        return View("Index", GlobalVariables.Tiquetes);
+        return Ok();
     }
 
     [HttpGet]
@@ -57,7 +63,7 @@ public class ReservaController : Controller
 
         GlobalVariables.isSearchTiquetes = false;
 
-        return View("Index", GlobalVariables.Tiquetes);
+        return Ok();
     }
 
     [HttpGet]
@@ -67,7 +73,7 @@ public class ReservaController : Controller
 
         GlobalVariables.isSearchTiquetes = true;
 
-        return View("Index", GlobalVariables.TiquetesFiltrado);
+        return Ok();
     }
 
     [HttpGet]
@@ -75,7 +81,7 @@ public class ReservaController : Controller
     {
         GlobalVariables.isSearchTiquetes = false;
 
-        return View("Index", GlobalVariables.TiquetesFiltrado);
+        return Ok();
     }
 
 }

@@ -50,11 +50,8 @@ namespace Parqueo.Backend
                 if (indexTiquete != -1)
                 {
                     // Se modifica el objeto
-                    GlobalVariables.Tiquetes[indexTiquete].fechaIngreso = tiquete.fechaIngreso;
                     GlobalVariables.Tiquetes[indexTiquete].fechaSalida = tiquete.fechaSalida;
-                    GlobalVariables.Tiquetes[indexTiquete].placa = tiquete.placa;
-                    GlobalVariables.Tiquetes[indexTiquete].tarifaHora = tiquete.tarifaHora;
-                    GlobalVariables.Tiquetes[indexTiquete].tarifaMediaHora = tiquete.tarifaMediaHora;
+                    GlobalVariables.Tiquetes[indexTiquete].montoPagar = tiquete.montoPagar;
                 }
             }
             catch (Exception ex)
@@ -77,15 +74,11 @@ namespace Parqueo.Backend
                 {
                     case EnumSearchTiquetes.Fechas:
                         DateTime fechaSearch = DateTime.Parse(valor);
-                        GlobalVariables.TiquetesFiltrado = (List<Tiquetes>)GlobalVariables.Tiquetes.Where(ticket => ticket.fechaIngreso >= fechaSearch && ticket.fechaSalida <= fechaSearch);
+                        GlobalVariables.TiquetesFiltrado = (List<Tiquetes>)GlobalVariables.Tiquetes.Where(ticket => ticket.fechaIngreso >= fechaSearch);
                         break;
 
                     case EnumSearchTiquetes.Placa:
                         GlobalVariables.TiquetesFiltrado = GlobalVariables.Tiquetes.Where(ticket => ticket.placa.Equals(valor)).ToList();
-                        break;
-
-                    case EnumSearchTiquetes.Tarifa:
-                        GlobalVariables.TiquetesFiltrado = (List<Tiquetes>)GlobalVariables.Tiquetes.Where(ticket => ticket.tarifaHora.ToString().Equals(valor) || ticket.tarifaMediaHora.ToString().Equals(valor));
                         break;
                 }
             }

@@ -6,46 +6,57 @@ var tiquetes = function () {
 
     var isEditTiquete = false;
     var idTiqueteSeleccionado = 0;
+    var tarifaHora = 0;
+    var tarifaMediaHora = 0;
+    var cantidadParqueos = 0;
 
     // Campos de agregar tiquete
     var txtFechaIngreso = $("#txtFechaIngresoTiquetes");
     var txtFechaSalida = $("#txtFechaSalidaTiquetes");
     var txtPlaca = $("#txtPlacaTiquetes");
-    var txtTarifaHora = $("#txtTarifaHoraTiquetes");
-    var txtTarifaMediaHora = $("#txtTarifaMediaHoraTiquetes");
+    var txtMontoPagar = $("#txtMontoPagarTiquetes");
     var txtSearchTiquete = $("#txtValorBusqueda");
+
+    //label
+    var lblTitleModal = $('#lblTitleModal');
 
     // Botones
     var btnAddTiquete = $('#btnAgregarTiquete');
+    var btnSearchTiquete = $('#btnBuscarTiquete');
+    var btnMostrarTodos = $('#btnMostrarTiquete');
+    var btnShowModal = $('#btnShowModal');
+    var btnCloseModal = $('#btnCloseModal');
 
     var init = function (args) {
 
         initArgs = args;
 
+        tarifaHora = initArgs.tarifaHora;
+        tarifaMediaHora = initArgs.tarifaMediaHora;
+        cantidadParqueos = initArgs.cantidadParqueos;
+
+        txtMontoPagar.prop('disabled', true);
+
         // Se establece los eventos de los botones
         btnAddTiquete.click(fnBotton);
-
 
         $('.btnEdit').click(function (e) {
 
             const editTiquete = {
                 id: $(this).attr("data-id"),
                 fechaIngreso: $(this).attr("data-fechaIngreso"),
-                fechaSalida: $(this).attr("data-fechaSalida"),
                 placa: $(this).attr("data-placa"),
-                tarifaHora: $(this).attr("data-tarifaHora"),
-                tarifaMediaHora: $(this).attr("data-tarifaMediaHora")
             };
             
             txtFechaIngreso.val(convertToDateTimeLocalString(editTiquete.fechaIngreso));
-            txtFechaSalida.val((editTiquete.fechaSalida != undefined) ? convertToDateTimeLocalString(editTiquete.fechaSalida) : null );
             txtPlaca.val(editTiquete.placa);
-            txtTarifaHora.val(editTiquete.tarifaHora);
-            txtTarifaMediaHora.val(editTiquete.tarifaMediaHora);
 
-            btnAddTiquete.html("Editar Tiquete");
+            txtFechaSalida.prop('disabled', false);
+
+            btnAddTiquete.html("Cobrar Tiquete");
             isEditTiquete = true;
             idTiqueteSeleccionado = editTiquete.id;
+            lblTitleModal.html("Cobrar Tiquete");
         });
 
         $('.btnDelete').click(function (e) {
@@ -53,14 +64,25 @@ var tiquetes = function () {
             fnRemoveTiquete(e);
         });
 
-        $('#btnBuscarTiquete').click(function (e) {
+        btnSearchTiquete.click(function (e) {
             fnSearchTiquete(e);
         });
 
-        $('#btnMostrarTiquete').click(function (e) {
+        btnMostrarTodos.click(function (e) {
             fnMostrarTodosTiquete(e);
         });
 
+        btnShowModal.click(function (e) {
+            txtFechaSalida.prop('disabled', true);
+        });
+
+        btnCloseModal.click(function (e) {
+            fnCleanModal(e);
+        });
+
+        txtFechaSalida.change(function (e) {
+            fnChangeFechaSalida(e);
+        });
 
     }
 
@@ -82,8 +104,18 @@ var tiquetes = function () {
         if (!validationFieldAdd()) {
             return;
         }
-        
 
+        //if (cantidadParqueos != 1) {
+        //    Swal.fire({
+        //        title: 'Advertencia',
+        //        text: 'No existe ningun parqueo, por favor crear un parqueo',
+        //        icon: 'warning',
+        //        confirmButtonText: 'Aceptar'
+        //    });
+
+        //    return;
+        //}
+        
         // Se envia la peticion atravez de Ajax
         $.ajax({
             async: true,
@@ -91,22 +123,18 @@ var tiquetes = function () {
             url: initArgs.addTiquete,
             data: {
                 fechaIngreso: txtFechaIngreso.val(),
-                fechaSalida: txtFechaSalida.val(),
                 placa: txtPlaca.val(),
-                tarifaHora: txtTarifaHora.val(),
-                tarifaMediaHora: txtTarifaMediaHora.val(),
             },
             datatype: "json",
             cache: true,
             success: function (response) {               
-                cleanCamposAdd();
                 window.location.href = '/Reserva'
             },
             error: function (e) {
                 console.log(e);
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Ocurrio un error al crear tiquete, por favor intentelo de nuevo.',
+                    text: 'Ocurrio un error al crear reversacion, por favor intentelo de nuevo.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
@@ -125,13 +153,7 @@ var tiquetes = function () {
         } else if (txtPlaca.val() == '') {
             msjError = 'La Placa es obligatoria';
 
-        } else if (txtTarifaHora.val() == 0) {
-            msjError = 'La Tarifa Hora es obligatoria';
-
-        } else if (txtTarifaMediaHora.val() == 0) {
-            msjError = 'La Tarifa Media Hora es obligatoria';
-
-        }
+        } 
 
         if (msjError != '') {
             Swal.fire({
@@ -146,14 +168,6 @@ var tiquetes = function () {
 
         return true;
 
-    }
-
-    const cleanCamposAdd = function (e) {
-        txtFechaIngreso.val('');
-        txtFechaSalida.val('');
-        txtPlaca.val('');
-        txtTarifaHora.val('');
-        txtTarifaMediaHora.val('');
     }
 
     const convertToDateTimeLocalString = function (date) {
@@ -364,6 +378,45 @@ var tiquetes = function () {
             }
         });
 
+    }
+
+    const fnCleanModal = function (e) {
+
+        e.preventDefault();
+
+        txtFechaIngreso.val('');
+        txtPlaca.val('');
+        txtFechaSalida.val('');
+        txtMontoPagar.val('');
+
+        btnAddTiquete.html("Reservar");
+        isEditTiquete = false;
+        idTiqueteSeleccionado = 0;
+        lblTitleModal.html("Crear Reserva");
+
+    }
+
+    const fnChangeFechaSalida = function (e) {
+
+        e.preventDefault();
+
+        const startDate = getDate(txtFechaIngreso.val());
+        const endDate = getDate(txtFechaSalida.val());
+
+        const diff = endDate.getTime() - startDate.getTime();
+
+        console.log(diff / 60000)
+    }
+
+    const getDate = function (date) {
+
+        const dateparse = date.split('T');
+
+        const date2 = dateparse[0].split('-');
+
+        const time = dateparse[1].split(':')
+
+        return new Date(parseInt(date2[0]), parseInt(date2[1]), parseInt(date2[2]), parseInt(time[0]), parseInt(time[1]));
     }
 
     return {

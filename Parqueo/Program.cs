@@ -15,24 +15,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Se establecen la inicializacion de Tiquetes
 GlobalVariables.Tiquetes = new List<Tiquetes>();
-GlobalVariables.Tiquetes.Add(new Tiquetes()
-{
-    idTiquete = 1,
-    fechaIngreso = DateTime.Now,
-    fechaSalida = DateTime.Now,
-    placa = "123",
-    tarifaHora = 12,
-    tarifaMediaHora = 12
-});
 GlobalVariables.TiquetesFiltrado = new List<Tiquetes>();
 GlobalVariables.isSearchTiquetes = false;
 
+// Se establecen la inicializacion de Parqueos
 GlobalVariables.Parqueos = new List<Parqueos>();
 GlobalVariables.ParqueosFiltrado = new List<Parqueos>();
+GlobalVariables.isSearchParqueos = false;
 
+// Se establecen la inicializacion de Empleados
 GlobalVariables.Empleados = new List<Empleados>();
 GlobalVariables.EmpleadosFiltrado = new List<Empleados>();
+GlobalVariables.isSearchEmpleados = false;
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

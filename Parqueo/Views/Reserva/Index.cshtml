@@ -1,4 +1,4 @@
-﻿@model List<Tiquetes>
+﻿@model ViewTiquetes
 @{
     ViewData["Title"] = "Reversa";
     
@@ -18,103 +18,170 @@
             deleteTiquete: '@Url.Action("removeTiquete", "Reserva")',
             searchTiquete: '@Url.Action("searchTiquete", "Reserva")',
             mostrarTiquete: '@Url.Action("mostrarTodos", "Reserva")',
+            tarifaHora: @Model.TarifaHora,
+            tarifaMediaHora: @Model.TarifaMediaHora,
+            cantidadParqueos: @Model.cantidadParqueo
         });
     });
 </script>
 
-    <div>
-        <h1 class="display-4">Reservas</h1>
-    </div>
+    <div class="container border border-secondary rounded mt-3 px-5">
 
-    <div>
-
-        <div class="form-group">
-            <label for="txtFechaIngresoTiquetes">Fecha Ingreso</label>
-            <input type="datetime-local" class="form-control" id="txtFechaIngresoTiquetes">
+        <div class="container">
+            <div class="text-center">
+                <h1 class="display-4 font-weight-bold">Reservas</h1>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="txtFechaSalidaTiquetes">Fecha Salida</label>
-            <input type="datetime-local" class="form-control" id="txtFechaSalidaTiquetes">
+        <div class="container mb-3">
+
+            <div class="row mb-2">
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="cboFiltrosBusquedaTiquetes">Filtros Busqueda</label>
+                        <select class="form-select" aria-label="Disabled select example" id="cboFiltrosBusquedaTiquetes">
+                          <option value="0" selected>Seleccione</option>
+                          <option value="1">Fecha y Hora</option>
+                          <option value="2">Placa</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtValorBusquedaTiquetes">Descripcion</label>
+                        <input type="text" class="form-control" id="txtValorBusquedaTiquetes">
+                    </div>
+                </div>
+
+                <div class="col-1 mt-4">
+                    <button id="btnBuscarTiquetes" class="btn btn-success">Buscar</button>
+                </div>
+
+                <div class="col-2 mt-4">
+                    <button id="btnMostrarTodosTiquetes" class="btn btn-info">Mostrar Todos</button>
+                </div>
+
+                <div class="col-2 mt-4 ml-5">
+                    <button type="button" class="btn btn-primary" id="btnShowModal" data-bs-toggle="modal" data-bs-target="#modalTiquete">Reservar</button>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <label for="txtPlacaTiquetes">Número Placa</label>
-            <input type="text" class="form-control" id="txtPlacaTiquetes">
-        </div>
-
-        <div class="form-group">
-            <label for="txtTarifaHoraTiquetes">Tarifa por Hora</label>
-            <input type="number" class="form-control" id="txtTarifaHoraTiquetes">
-        </div>
-
-        <div class="form-group">
-            <label for="txtTarifaMediaHoraTiquetes">Tarifa por Media Hora</label>
-            <input type="number" class="form-control" id="txtTarifaMediaHoraTiquetes">
-        </div>
-
-        <button id="btnAgregarTiquete" class="btn btn-primary">Crear Tiquete</button>
-
-    </div>
-
-    <div>
-
-        <div class="form-group">
-            <label for="txtValorBusqueda">Busqueda</label>
-            <input type="text" class="form-control" id="txtValorBusqueda">
-        </div>
-
-        <button id="btnBuscarTiquete" class="btn btn-primary">Buscar Tiquete</button>
-        <button id="btnMostrarTiquete" class="btn btn-primary">Mostrar Todos</button>
-
-    </div>
-
-    <div>
-        <table id="tableTiquetes" class="table table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th width="4%">Id</th>
-                    <th width="13%">Fecha Entrada</th>
-                    <th width="13%">Fecha Salida</th>
-                    <th width="13%">Placa</th>
-                    <th width="13%">Tarifa Hora</th>
-                    <th width="15%">Tarida Media Hora</th>
-                    <th width="35%">Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="tablebodyTiquetes">
-                @{
-                    foreach( Tiquetes tiquetes in @Model ){
-                                <tr>
-                                    <td>@tiquetes.idTiquete</td>
-                                    <td>@tiquetes.fechaIngreso</td>
-                                    <td>@tiquetes.fechaSalida</td>
-                                    <td>@tiquetes.placa</td>
-                                    <td>@tiquetes.tarifaHora</td>
-                                    <td>@tiquetes.tarifaMediaHora</td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <button type="button" class="btn btn-info btnEdit"
-                                                    data-id="@tiquetes.idTiquete"
-                                                    data-fechaIngreso="@tiquetes.fechaIngreso"
-                                                    data-fechaSalida="@tiquetes.fechaSalida"
-                                                    data-placa="@tiquetes.placa"
-                                                    data-tarifaHora="@tiquetes.tarifaHora"
-                                                    data-tarifaMediaHora="@tiquetes.tarifaMediaHora"
-                                                >
-                                                    Editar
-                                                </button>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <button type="button" class="btn btn-danger btnDelete" data-id="@tiquetes.idTiquete">Eliminar</button>
-                                            </div>
+        <div>
+            <table id="tableTiquetes" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th width="4%">Id</th>
+                        <th width="20%">Fecha y Hora Entrada</th>
+                        <th width="20%">Fecha y Hora Salida</th>
+                        <th width="13%">Placa</th>
+                        <th width="40%">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablebodyTiquetes">
+                    @{
+                        foreach( Tiquetes tiquetes in @Model.tiquetes ){
+                            <tr>
+                                <td>@tiquetes.idTiquete</td>
+                                <td>@tiquetes.fechaIngreso</td>
+                                <td>@tiquetes.fechaSalida</td>
+                                <td>@tiquetes.placa</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-info btnEdit"
+                                                data-id="@tiquetes.idTiquete"
+                                                data-fechaIngreso="@tiquetes.fechaIngreso"
+                                                data-placa="@tiquetes.placa"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#modalTiquete"
+                                            >
+                                                Cobrar
+                                            </button>
                                         </div>
-                                    </td>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-danger btnDelete" data-id="@tiquetes.idTiquete">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </td>
                                    
-                                </tr>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal mt-5" id="modalTiquete">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                      <div class="text-center">
+                          <h4 class="modal-title" id="lblTitleModal" >Crear Reserva</h4>
+                      </div>
+                  </div>
+
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                      
+                         <div class="container mb-3">
+
+                            <div class="row mb-2">
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txtFechaIngresoTiquetes">Fecha Ingreso</label>
+                                        <input type="datetime-local" data-date-format="DD MMMM YYYY" class="form-control" id="txtFechaIngresoTiquetes">
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txtPlacaTiquetes">Número Placa</label>
+                                        <input type="text" class="form-control" id="txtPlacaTiquetes">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txtFechaSalidaTiquetes">Fecha Salida</label>
+                                        <input type="datetime-local" class="form-control" id="txtFechaSalidaTiquetes">
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                   <div class="form-group">
+                                        <label for="txtMontoPagarTiquetes">Monto Pagar</label>
+                                        <input type="text" class="form-control" id="txtMontoPagarTiquetes">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                        <button id="btnAgregarTiquete" class="btn btn-primary">Reservar</button>
+                        <button id="btnCloseModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+
+            </div>
+        </div>
     </div>
