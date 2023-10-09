@@ -12,6 +12,8 @@ namespace Parqueo.Models.Interfaces
 		string placa { get; set; }
 
 		float montoPagar { get; set; }
+
+		string tiempoConsumido { get; set; }
     }
 }
 

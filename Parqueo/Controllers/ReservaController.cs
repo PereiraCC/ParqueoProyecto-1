@@ -52,7 +52,7 @@ public class ReservaController : Controller
         accionesTiquetes.editValue(tiquete, tiquete.idTiquete);
         GlobalVariables.isSearchTiquetes = false;
 
-        return View("Index", GlobalVariables.Tiquetes);
+        return Ok();
     }
 
     [HttpGet]

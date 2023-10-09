@@ -52,6 +52,7 @@ namespace Parqueo.Backend
                     // Se modifica el objeto
                     GlobalVariables.Tiquetes[indexTiquete].fechaSalida = tiquete.fechaSalida;
                     GlobalVariables.Tiquetes[indexTiquete].montoPagar = tiquete.montoPagar;
+                    GlobalVariables.Tiquetes[indexTiquete].tiempoConsumido = tiquete.tiempoConsumido;
                 }
             }
             catch (Exception ex)

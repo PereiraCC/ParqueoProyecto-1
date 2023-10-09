@@ -5,6 +5,7 @@ var tiquetes = function () {
     var initArgs;
 
     var isEditTiquete = false;
+    var isVerTiquete = false;
     var idTiqueteSeleccionado = 0;
     var tarifaHora = 0;
     var tarifaMediaHora = 0;
@@ -16,6 +17,7 @@ var tiquetes = function () {
     var txtPlaca = $("#txtPlacaTiquetes");
     var txtMontoPagar = $("#txtMontoPagarTiquetes");
     var txtSearchTiquete = $("#txtValorBusqueda");
+    var txtTiempoConsumo = $('#txtTiempoConsumidoTiquetes');
 
     //label
     var lblTitleModal = $('#lblTitleModal');
@@ -36,6 +38,7 @@ var tiquetes = function () {
         cantidadParqueos = initArgs.cantidadParqueos;
 
         txtMontoPagar.prop('disabled', true);
+        txtTiempoConsumo.prop('disabled', true);
 
         // Se establece los eventos de los botones
         btnAddTiquete.click(fnBotton);
@@ -48,7 +51,7 @@ var tiquetes = function () {
                 placa: $(this).attr("data-placa"),
             };
             
-            txtFechaIngreso.val(convertToDateTimeLocalString(editTiquete.fechaIngreso));
+            txtFechaIngreso.val(getHour(editTiquete.fechaIngreso));
             txtPlaca.val(editTiquete.placa);
 
             txtFechaSalida.prop('disabled', false);
@@ -57,6 +60,34 @@ var tiquetes = function () {
             isEditTiquete = true;
             idTiqueteSeleccionado = editTiquete.id;
             lblTitleModal.html("Cobrar Tiquete");
+        });
+
+        $('.btnVer').click(function (e) {
+
+            const editTiquete = {
+                id: $(this).attr("data-id"),
+                fechaIngreso: $(this).attr("data-fechaIngreso"),
+                placa: $(this).attr("data-placa"),
+                fechaSalida: $(this).attr("data-fechaSalida"),
+                montoPagar: $(this).attr("data-montoPagar"),
+                tiempoConsumido: $(this).attr("data-tiempoConsumido"),
+            };
+
+            txtFechaIngreso.val(getHour(editTiquete.fechaIngreso));
+            txtFechaSalida.val(getHour(editTiquete.fechaSalida));
+            txtPlaca.val(editTiquete.placa);
+            txtMontoPagar.val(editTiquete.montoPagar);
+            txtTiempoConsumo.val(editTiquete.tiempoConsumido);
+
+            txtFechaIngreso.prop('disabled', true);
+            txtFechaSalida.prop('disabled', true);
+            txtPlaca.prop('disabled', true);
+            txtMontoPagar.prop('disabled', true);
+            txtTiempoConsumo.prop('disabled', true);
+
+            btnAddTiquete.css("visibility", "hidden");
+            isVerTiquete = true;
+            lblTitleModal.html("Ver Tiquete");
         });
 
         $('.btnDelete').click(function (e) {
@@ -105,16 +136,16 @@ var tiquetes = function () {
             return;
         }
 
-        //if (cantidadParqueos != 1) {
-        //    Swal.fire({
-        //        title: 'Advertencia',
-        //        text: 'No existe ningun parqueo, por favor crear un parqueo',
-        //        icon: 'warning',
-        //        confirmButtonText: 'Aceptar'
-        //    });
+        if (cantidadParqueos != 1) {
+            Swal.fire({
+                title: 'Advertencia',
+                text: 'No existe ningun parqueo, por favor crear un parqueo',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
 
-        //    return;
-        //}
+            return;
+        }
         
         // Se envia la peticion atravez de Ajax
         $.ajax({
@@ -238,6 +269,68 @@ var tiquetes = function () {
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
+    const getHour = function (date) {
+
+        const newDate = date.split(' ');
+
+        const time = newDate[1].split(':');
+
+        if (newDate[2] == 'p.') {
+
+            switch (time[0]) {
+                case '01':
+                    time[0] = '13'
+                    break;
+
+                case '02':
+                    time[0] = '14'
+                    break;
+
+                case '03':
+                    time[0] = '15'
+                    break;
+
+                case '04':
+                    time[0] = '16'
+                    break;
+
+                case '05':
+                    time[0] = '17'
+                    break;
+
+                case '06':
+                    time[0] = '18'
+                    break;
+
+                case '07':
+                    time[0] = '19'
+                    break;
+
+                case '08':
+                    time[0] = '20'
+                    break;
+
+                case '09':
+                    time[0] = '21'
+                    break;
+
+                case '10':
+                    time[0] = '22'
+                    break;
+
+                case '11':
+                    time[0] = '23'
+                    break;
+
+                case '12':
+                    time[0] = '00'
+                    break;
+            }
+        }
+
+        return `${time[0]}:${time[1]}:${time[2]}`;
+    }
+
     const fnEditTiquete = function (e) {
 
         e.preventDefault();
@@ -255,10 +348,12 @@ var tiquetes = function () {
             data: {
                 idTiquete: idTiqueteSeleccionado,
                 fechaIngreso: txtFechaIngreso.val(),
+                placa: txtPlaca.val(),
+                fechaIngreso: txtFechaIngreso.val(),
                 fechaSalida: txtFechaSalida.val(),
                 placa: txtPlaca.val(),
-                tarifaHora: txtTarifaHora.val(),
-                tarifaMediaHora: txtTarifaMediaHora.val(),
+                montoPagar: txtMontoPagar.val(),
+                tiempoConsumido: txtTiempoConsumo.val()
             },
             datatype: "json",
             cache: true,
@@ -388,7 +483,12 @@ var tiquetes = function () {
         txtPlaca.val('');
         txtFechaSalida.val('');
         txtMontoPagar.val('');
+        txtTiempoConsumo.val('');
 
+        txtFechaIngreso.prop('disabled', false);
+        txtPlaca.prop('disabled', false);
+
+        btnAddTiquete.css("visibility", "visible");
         btnAddTiquete.html("Reservar");
         isEditTiquete = false;
         idTiqueteSeleccionado = 0;
@@ -397,26 +497,55 @@ var tiquetes = function () {
     }
 
     const fnChangeFechaSalida = function (e) {
-
+        
         e.preventDefault();
+        const time = getDiferentHours();
 
-        const startDate = getDate(txtFechaIngreso.val());
-        const endDate = getDate(txtFechaSalida.val());
+        const cantidadHours = time.split(':')[0];
+        const cantidadMinutes = time.split(":")[1];
 
-        const diff = endDate.getTime() - startDate.getTime();
+        let price = 0;
 
-        console.log(diff / 60000)
+        // Se saca el precio de la horas
+        for (let i = 0; i < parseInt(cantidadHours); i++) {
+            price += parseFloat(tarifaHora);
+        }
+
+        if (parseInt(cantidadMinutes) != 0) {
+            if (parseInt(cantidadMinutes) >= 30) {
+                price += parseFloat(tarifaHora);
+            } else {
+                price += parseFloat(tarifaMediaHora);
+            }
+        }
+
+        txtTiempoConsumo.val(time);
+        txtMontoPagar.val(price);
     }
 
-    const getDate = function (date) {
+    const getDiferentHours = function () {
 
-        const dateparse = date.split('T');
+        var startTime = txtFechaIngreso.val();
+        var endTime = txtFechaSalida.val();
 
-        const date2 = dateparse[0].split('-');
+        var todayDate = moment(new Date()).format("MM-DD-YYYY"); //Instead of today date, We can pass whatever date        
 
-        const time = dateparse[1].split(':')
+        var startDate = new Date(`${todayDate} ${startTime}`);
+        var endDate = new Date(`${todayDate} ${endTime}`);
+        var timeDiff = Math.abs(startDate.getTime() - endDate.getTime());
 
-        return new Date(parseInt(date2[0]), parseInt(date2[1]), parseInt(date2[2]), parseInt(time[0]), parseInt(time[1]));
+        var hh = Math.floor(timeDiff / 1000 / 60 / 60);
+        hh = ('0' + hh).slice(-2)
+
+        timeDiff -= hh * 1000 * 60 * 60;
+        var mm = Math.floor(timeDiff / 1000 / 60);
+        mm = ('0' + mm).slice(-2)
+
+        timeDiff -= mm * 1000 * 60;
+        var ss = Math.floor(timeDiff / 1000);
+        ss = ('0' + ss).slice(-2)
+
+        return `${hh}:${mm}:${ss}`;
     }
 
     return {

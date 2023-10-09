@@ -92,20 +92,42 @@
                                 <td>@tiquetes.placa</td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-sm-3">
-                                            <button type="button" class="btn btn-info btnEdit"
-                                                data-id="@tiquetes.idTiquete"
-                                                data-fechaIngreso="@tiquetes.fechaIngreso"
-                                                data-placa="@tiquetes.placa"
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#modalTiquete"
-                                            >
-                                                Cobrar
-                                            </button>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <button type="button" class="btn btn-danger btnDelete" data-id="@tiquetes.idTiquete">Cancelar</button>
-                                        </div>
+                                        @if(tiquetes.montoPagar == 0)
+                                        {
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-info btnEdit"
+                                                    data-id="@tiquetes.idTiquete"
+                                                    data-fechaIngreso="@tiquetes.fechaIngreso"
+                                                    data-placa="@tiquetes.placa"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#modalTiquete"
+                                                >
+                                                    Cobrar
+                                                </button>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-danger btnDelete" data-id="@tiquetes.idTiquete">Cancelar</button>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-info btnVer"
+                                                    data-id="@tiquetes.idTiquete"
+                                                    data-fechaIngreso="@tiquetes.fechaIngreso"
+                                                    data-placa="@tiquetes.placa"
+                                                    data-fechaSalida="@tiquetes.fechaSalida"
+                                                    data-montoPagar="@tiquetes.montoPagar"
+                                                    data-tiempoConsumido="@tiquetes.tiempoConsumido"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#modalTiquete"
+                                                >
+                                                    Ver
+                                                </button>
+                                            </div>
+                                        }
+                                       
                                     </div>
                                 </td>
                                    
@@ -140,8 +162,8 @@
 
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="txtFechaIngresoTiquetes">Fecha Ingreso</label>
-                                        <input type="datetime-local" data-date-format="DD MMMM YYYY" class="form-control" id="txtFechaIngresoTiquetes">
+                                        <label for="txtFechaIngresoTiquetes">Hora Ingreso</label>
+                                        <input type="time" data-date-format="DD MMMM YYYY" class="form-control" id="txtFechaIngresoTiquetes">
                                     </div>
                                 </div>
 
@@ -158,12 +180,19 @@
 
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="txtFechaSalidaTiquetes">Fecha Salida</label>
-                                        <input type="datetime-local" class="form-control" id="txtFechaSalidaTiquetes">
+                                        <label for="txtFechaSalidaTiquetes">Hora Salida</label>
+                                        <input type="time" class="form-control" id="txtFechaSalidaTiquetes">
                                     </div>
                                 </div>
 
-                                <div class="col-6">
+                                <div class="col-3">
+                                   <div class="form-group">
+                                        <label for="txtTiempoConsumidoTiquetes">Tiempo Consumido</label>
+                                        <input type="text" class="form-control" id="txtTiempoConsumidoTiquetes">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
                                    <div class="form-group">
                                         <label for="txtMontoPagarTiquetes">Monto Pagar</label>
                                         <input type="text" class="form-control" id="txtMontoPagarTiquetes">
