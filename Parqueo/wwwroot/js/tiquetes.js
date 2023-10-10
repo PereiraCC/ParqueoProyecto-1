@@ -16,16 +16,17 @@ var tiquetes = function () {
     var txtFechaSalida = $("#txtFechaSalidaTiquetes");
     var txtPlaca = $("#txtPlacaTiquetes");
     var txtMontoPagar = $("#txtMontoPagarTiquetes");
-    var txtSearchTiquete = $("#txtValorBusqueda");
+    var txtSearchTiquete = $("#txtValorBusquedaTiquetes");
     var txtTiempoConsumo = $('#txtTiempoConsumidoTiquetes');
+    var cboFiltrosBusqueda = $('#cboFiltrosBusquedaTiquetes');
 
     //label
     var lblTitleModal = $('#lblTitleModal');
 
     // Botones
     var btnAddTiquete = $('#btnAgregarTiquete');
-    var btnSearchTiquete = $('#btnBuscarTiquete');
-    var btnMostrarTodos = $('#btnMostrarTiquete');
+    var btnSearchTiquete = $('#btnBuscarTiquetes');
+    var btnMostrarTodos = $('#btnMostrarTodosTiquetes');
     var btnShowModal = $('#btnShowModal');
     var btnCloseModal = $('#btnCloseModal');
 
@@ -421,13 +422,25 @@ var tiquetes = function () {
 
         e.preventDefault();
 
+        if (txtSearchTiquete.val() == '' || cboFiltrosBusqueda.val() == '0') {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Seleccione el filtro a buscar y el valor de busqueda.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+
+            return;
+        }
+
         // Se envia la peticion atravez de Ajax
         $.ajax({
             async: true,
             type: "GET",
             url: initArgs.searchTiquete,
             data: {
-                valor: txtSearchTiquete.val()
+                valor: txtSearchTiquete.val(),
+                filtro: cboFiltrosBusqueda.val()
             },
             datatype: "json",
             cache: true,

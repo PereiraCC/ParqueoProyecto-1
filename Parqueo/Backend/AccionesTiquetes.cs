@@ -73,11 +73,6 @@ namespace Parqueo.Backend
 
                 switch (tipo)
                 {
-                    case EnumSearchTiquetes.Fechas:
-                        DateTime fechaSearch = DateTime.Parse(valor);
-                        GlobalVariables.TiquetesFiltrado = (List<Tiquetes>)GlobalVariables.Tiquetes.Where(ticket => ticket.fechaIngreso >= fechaSearch);
-                        break;
-
                     case EnumSearchTiquetes.Placa:
                         GlobalVariables.TiquetesFiltrado = GlobalVariables.Tiquetes.Where(ticket => ticket.placa.Equals(valor)).ToList();
                         break;

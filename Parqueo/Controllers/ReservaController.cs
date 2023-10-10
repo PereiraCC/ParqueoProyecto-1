@@ -67,9 +67,17 @@ public class ReservaController : Controller
     }
 
     [HttpGet]
-    public ActionResult searchTiquete(string valor)
+    public ActionResult searchTiquete(string valor, string filtro)
     {
-        accionesTiquetes.searchValue(valor, Models.Enums.EnumSearchTiquetes.Placa);
+        Models.Enums.EnumSearchTiquetes enumSearchTiquetes = Models.Enums.EnumSearchTiquetes.Placa;
+        switch (filtro)
+        {
+            case "1":
+                enumSearchTiquetes = Models.Enums.EnumSearchTiquetes.Placa;
+                break;
+
+        }
+        accionesTiquetes.searchValue(valor, enumSearchTiquetes);
 
         GlobalVariables.isSearchTiquetes = true;
 
