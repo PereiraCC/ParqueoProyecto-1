@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TjCFCV3C4SLKsQ7y6MY2WsszsvyDEG4ZGUaIOt0yFk0=",
+  "Hash": "tgLuJSM5rD3tW4FpuZKuycvNcQWZhR+zYfr8YEuJvXA=",
   "Source": "Parqueo",
   "BasePath": "_content/Parqueo",
   "Mode": "Default",
@@ -117,6 +117,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\empleados.js"
+    },
+    {
+      "Identity": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\wwwroot\\js\\estadistica.js",
+      "SourceId": "Parqueo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\wwwroot\\",
+      "BasePath": "_content/Parqueo",
+      "RelativePath": "js/estadistica.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\estadistica.js"
     },
     {
       "Identity": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\wwwroot\\js\\parqueos.js",

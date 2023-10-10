@@ -17,4 +17,10 @@
   <ItemGroup>
     <None Include="wwwroot\assets\barrier-car.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="Views\Estadistica\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

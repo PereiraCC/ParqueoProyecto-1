@@ -17,7 +17,7 @@ public class EstadisticaController : Controller
 
     public IActionResult Index()
     {
-        return View((GlobalVariables.isSearchEstadistica) ? GlobalVariables.EstadisticasFiltrado : GlobalVariables.EstadisticasFiltrado);
+        return View((GlobalVariables.isSearchEstadistica) ? GlobalVariables.EstadisticasFiltrado : GlobalVariables.Estadisticas);
     }
 
     [HttpGet]

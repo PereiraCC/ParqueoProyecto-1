@@ -1,0 +1,215 @@
+﻿@model Estadistica
+@{
+    ViewData["Title"] = "Estadistica";
+    
+}
+
+@section Scripts {
+    <script src="~/js/estadistica.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        estadistica.Init({
+            searchVenta: '@Url.Action("searchVenta", "Estadistica")',
+            mostrarTodos: '@Url.Action("mostrarTodos", "Estadistica")',
+        });
+    });
+</script>
+
+    <div class="container border border-secondary rounded mt-3 px-5">
+
+        <div class="container">
+            <div class="text-center">
+                <h1 class="display-4 font-weight-bold">Estadistica</h1>
+            </div>
+        </div>
+
+        <div class="container mb-3">
+
+            <div class="row mb-2">
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="cboFiltrosBusquedaEstadistica">Filtros Busqueda</label>
+                        <select class="form-select" aria-label="Disabled select example" id="cboFiltrosBusquedaEstadistica">
+                          <option value="0" selected>Seleccione</option>
+                          <option value="1">Monto</option>
+                          <option value="2">Placa</option>
+                          <option value="3">Horas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="txtValorBusquedaEstadistica">Descripcion</label>
+                        <input type="text" class="form-control" id="txtValorBusquedaEstadistica">
+                    </div>
+                </div>
+
+                <div class="col-1 mt-4">
+                    <button id="btnBuscarEstadistica" class="btn btn-success">Buscar</button>
+                </div>
+
+                <div class="col-2 mt-4">
+                    <button id="btnMostrarTodosEstadistica" class="btn btn-info">Mostrar Todos</button>
+                </div>
+
+                <div class="col-3 mt-4">
+                    <div class="row">
+                        <h2>Monto Total: <small>@Model.montoGenerado</small></h2>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div>
+            <table id="tableEstadistica" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th width="4%">Id</th>
+                        <th width="20%">Nombre Parqueo</th>
+                        <th width="20%">Fecha y Hora Entrada</th>
+                        <th width="20%">Fecha y Hora Salida</th>
+                        <th width="13%">Placa</th>
+                        <th width="13%">Tiempo Consumido</th>
+                        <th width="13%">Monto Pagado</th>
+                        <th width="40%">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablebodyEstadistica">
+                    @{
+                        foreach( Venta venta in @Model.ventas ){
+                            <tr>
+                                <td>@venta.idVenta</td>
+                                <td>@venta.NombreParqueo</td>
+                                <td>@venta.fechaIngreso</td>
+                                <td>@venta.fechaSalida</td>
+                                <td>@venta.placa</td>
+                                <td>@venta.tiempoConsumido</td>
+                                <td>@venta.montoPagar</td>
+                                <td>
+                                    <div class="row">
+                                       <div class="col-sm-3">
+                                            <button type="button" class="btn btn-info btnVer"
+                                                data-id="@venta.idVenta"
+                                                data-nombreParqueo="@venta.NombreParqueo"
+                                                data-fechaIngreso="@venta.fechaIngreso"
+                                                data-fechaSalida="@venta.fechaSalida"
+                                                data-placa="@venta.placa"
+                                                data-tiempoConsumido="@venta.tiempoConsumido"
+                                                data-montoPagar="@venta.montoPagar"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#modalEstadistica"
+                                            >
+                                                Ver
+                                            </button>
+                                        </div>                                       
+                                    </div>
+                                </td>
+                                   
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal mt-5" id="modalEstadistica">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                      <div class="text-center">
+                          <h4 class="modal-title" id="lblTitleModal" >Venta</h4>
+                      </div>
+                  </div>
+
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                      
+                         <div class="container mb-3">
+
+                            <div class="row mb-2">
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="txtIdVentaEstadistica">Id Venta</label>
+                                        <input type="text" class="form-control" id="txtIdVentaEstadistica">
+                                    </div>
+                                </div>
+
+                                <div class="col-9">
+                                    <div class="form-group">
+                                        <label for="txtNombreParqueoEstadistica">Nombre Parqueo</label>
+                                        <input type="text" class="form-control" id="txtNombreParqueoEstadistica">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txtFechaIngresoEstadistica">Hora Ingreso</label>
+                                        <input type="time" class="form-control" id="txtFechaIngresoEstadistica">
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txtFechaSalidaEstadistica">Hora Salida</label>
+                                        <input type="time" class="form-control" id="txtFechaSalidaEstadistica">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txtPlacaEstadistica">Número Placa</label>
+                                        <input type="text" class="form-control" id="txtPlacaEstadistica">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                   <div class="form-group">
+                                        <label for="txtTiempoConsumidoEstadistica">Tiempo Consumido</label>
+                                        <input type="text" class="form-control" id="txtTiempoConsumidoEstadistica">
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                   <div class="form-group">
+                                        <label for="txtMontoPagarEstadistica">Monto Pagar</label>
+                                        <input type="text" class="form-control" id="txtMontoPagarEstadistica">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                        <button id="btnCloseModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+
+            </div>
+        </div>
+    </div>

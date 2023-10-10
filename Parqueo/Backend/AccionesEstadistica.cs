@@ -64,7 +64,7 @@ namespace Parqueo.Backend
                         break;
 
                     case EnumSearchEstadistica.Horas:
-                        GlobalVariables.EstadisticasFiltrado.ventas = GlobalVariables.Estadisticas.ventas.Where(estadistica => estadistica.fechaIngreso.Equals(valor)).ToList();
+                        GlobalVariables.EstadisticasFiltrado.ventas = GlobalVariables.Estadisticas.ventas.Where(estadistica => estadistica.fechaIngreso.ToString("HH:mm").Equals(valor)).ToList();
                         break;
                 }
             }
