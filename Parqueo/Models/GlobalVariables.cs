@@ -22,5 +22,11 @@ namespace Parqueo.Models
 
         public static bool isSearchEmpleados { get; set; }
 
+        public static Estadistica Estadisticas { get; set; }
+
+        public static Estadistica EstadisticasFiltrado { get; set; }
+
+        public static bool isSearchEstadistica { get; set; }
+
     }
 }

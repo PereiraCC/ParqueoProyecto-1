@@ -30,6 +30,13 @@ GlobalVariables.Empleados = new List<Empleados>();
 GlobalVariables.EmpleadosFiltrado = new List<Empleados>();
 GlobalVariables.isSearchEmpleados = false;
 
+// Se establecen la inicializacion de Estadistica
+GlobalVariables.Estadisticas = new Estadistica();
+GlobalVariables.Estadisticas.ventas = new List<Venta>();
+GlobalVariables.EstadisticasFiltrado = new Estadistica();
+GlobalVariables.EstadisticasFiltrado.ventas = new List<Venta>();
+GlobalVariables.isSearchEstadistica = false;
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

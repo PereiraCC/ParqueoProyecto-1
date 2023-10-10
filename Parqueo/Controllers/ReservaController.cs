@@ -9,10 +9,12 @@ public class ReservaController : Controller
 {
 
     public AccionesTiquetes accionesTiquetes;
+    public AccionesEstadistica accionesEstadistica;
 
     public ReservaController()
     {
         accionesTiquetes = new AccionesTiquetes();
+        accionesEstadistica = new AccionesEstadistica();
     }
 
     public IActionResult Index()
@@ -51,6 +53,15 @@ public class ReservaController : Controller
         
         accionesTiquetes.editValue(tiquete, tiquete.idTiquete);
         GlobalVariables.isSearchTiquetes = false;
+
+        accionesEstadistica.addValue(new Venta()
+        {
+            fechaIngreso = tiquete.fechaIngreso,
+            fechaSalida = tiquete.fechaSalida,
+            placa = tiquete.placa,
+            montoPagar = tiquete.montoPagar,
+            tiempoConsumido = tiquete.tiempoConsumido
+        });
 
         return Ok();
     }
