@@ -18,7 +18,7 @@ public class HomeController : Controller
         return View(GlobalVariables.Tiquetes);
     }
 
-    public IActionResult Privacy()
+    public IActionResult About()
     {
         return View();
     }
