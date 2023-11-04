@@ -6,13 +6,15 @@ namespace Parqueo.Backend.Interfaces
 {
     public interface IAccionesEmpleados
     {
-        void addValue(Empleados empleado);
+        Task getAllEmpleados();
 
-        void editValue(Empleados empleado, int idEmpleado);
+        Task addValue(Empleados empleado);
 
-        void searchValue(string valor, EnumSearchEmpleados tipo);
+        Task editValue(Empleados empleado);
 
-        void deleteValue(Empleados empleado);
+        Task searchValue(string valor, EnumSearchEmpleados tipo);
+
+        Task deleteValue(Empleados empleado);
 
     }
 }

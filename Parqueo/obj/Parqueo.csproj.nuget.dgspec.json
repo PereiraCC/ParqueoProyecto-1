@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\Parqueo.csproj": {}
+    "C:\\Users\\PereiraCoto\\Desktop\\ProyectoCursoWeb\\ParqueoProyecto-1\\Parqueo\\Parqueo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\Parqueo.csproj": {
+    "C:\\Users\\PereiraCoto\\Desktop\\ProyectoCursoWeb\\ParqueoProyecto-1\\Parqueo\\Parqueo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\Parqueo.csproj",
+        "projectUniqueName": "C:\\Users\\PereiraCoto\\Desktop\\ProyectoCursoWeb\\ParqueoProyecto-1\\Parqueo\\Parqueo.csproj",
         "projectName": "Parqueo",
-        "projectPath": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\Parqueo.csproj",
+        "projectPath": "C:\\Users\\PereiraCoto\\Desktop\\ProyectoCursoWeb\\ParqueoProyecto-1\\Parqueo\\Parqueo.csproj",
         "packagesPath": "C:\\Users\\PereiraCoto\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PereiraCoto\\Desktop\\test\\ParqueoProyecto-1\\Parqueo\\obj\\",
+        "outputPath": "C:\\Users\\PereiraCoto\\Desktop\\ProyectoCursoWeb\\ParqueoProyecto-1\\Parqueo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -45,6 +45,12 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

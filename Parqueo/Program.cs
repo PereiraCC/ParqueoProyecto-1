@@ -1,9 +1,14 @@
 ﻿using Parqueo.Models;
+using Parqueo.Models.Configuracion;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddOptions();
+builder.Services.Configure<ConfiguracionParqueo>(
+    builder.Configuration.GetSection("ConfiguracionParqueo"));
 
 var app = builder.Build();
 

@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Parqueo.Backend;
 using Parqueo.Models;
+using Parqueo.Models.Configuracion;
 
 namespace Parqueo.Controllers;
 
@@ -10,13 +12,14 @@ public class EmpleadoController : Controller
 
     public AccionesEmpleados accionesEmpleados;
 
-    public EmpleadoController()
+    public EmpleadoController(IOptions<ConfiguracionParqueo> options)
     {
-        accionesEmpleados = new AccionesEmpleados();
+        accionesEmpleados = new AccionesEmpleados(options.Value);
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        await accionesEmpleados.getAllEmpleados();
         return View( (GlobalVariables.isSearchEmpleados) ? GlobalVariables.EmpleadosFiltrado : GlobalVariables.Empleados);
     }
 
@@ -43,7 +46,7 @@ public class EmpleadoController : Controller
     public ActionResult editEmpleado(Empleados empleado)
     {
         
-        accionesEmpleados.editValue(empleado, empleado.IdEmpleado);
+        accionesEmpleados.editValue(empleado);
         GlobalVariables.isSearchEmpleados = false;
 
         return View("Index", GlobalVariables.Empleados);

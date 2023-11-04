@@ -1,67 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parqueo.Backend.Interfaces;
+using Parqueo.Backend.Procesador;
 using Parqueo.Models;
+using Parqueo.Models.Configuracion;
 using Parqueo.Models.Enums;
 
 namespace Parqueo.Backend
 {
     public class AccionesEmpleados : IAccionesEmpleados
     {
+        public ProcesadorAPI procesador;
 
-        public AccionesEmpleados()
+        public AccionesEmpleados(ConfiguracionParqueo configuracionParqueo)
         {
+            procesador = new ProcesadorAPI(configuracionParqueo);
         }
 
-        public void addValue(Empleados empleado)
+        public async Task getAllEmpleados()
         {
             try
             {
-                // Se agrega el nuevo tiquete
-                GlobalVariables.Empleados.Add(empleado);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public void deleteValue(Empleados empleado)
-        {
-            try
-            {
-                // Se eliminar el tiquete
-                GlobalVariables.Empleados.Remove(empleado);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public void editValue(Empleados empleado, int idEmpleado)
-        {
-            try
-            {
-                // Se busca el index de tiquete a modificar
-                int indexEmpleado = GlobalVariables.Empleados.FindIndex(emple => emple.IdEmpleado == idEmpleado);
-
-                // Se valida que index sea correcto
-                if (indexEmpleado != -1)
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
                 {
-                    // Se modifica el objeto
-                    GlobalVariables.Empleados[indexEmpleado].NumeroEmpleado = empleado.NumeroEmpleado;
-                    GlobalVariables.Empleados[indexEmpleado].FechaIngreso = empleado.FechaIngreso;
-                    GlobalVariables.Empleados[indexEmpleado].PrimerNombre = empleado.PrimerNombre;
-                    GlobalVariables.Empleados[indexEmpleado].SegundoNombre = empleado.SegundoNombre;
-                    GlobalVariables.Empleados[indexEmpleado].PrimerApellido = empleado.PrimerApellido;
-                    GlobalVariables.Empleados[indexEmpleado].SegundoApellido = empleado.SegundoApellido;
-                    GlobalVariables.Empleados[indexEmpleado].FechaNacimiento = empleado.FechaNacimiento;
-                    GlobalVariables.Empleados[indexEmpleado].Identificacion = empleado.Identificacion;
-                    GlobalVariables.Empleados[indexEmpleado].Direccion = empleado.Direccion;
-                    GlobalVariables.Empleados[indexEmpleado].CorreoElectronico = empleado.CorreoElectronico;
-                    GlobalVariables.Empleados[indexEmpleado].Telefono = empleado.Telefono;
-                    GlobalVariables.Empleados[indexEmpleado].PersonaContacto = empleado.PersonaContacto;
+                    EndPoint = "/api/Empleados/GetAll",
+                    Request = new object() { }
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if(response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Empleados>> empleados = JsonConvert.DeserializeObject<ResponseGeneric<List<Empleados>>>(response.Responses.ToString());
+                    GlobalVariables.Empleados = empleados.Responses;
                 }
             }
             catch (Exception ex)
@@ -70,29 +46,128 @@ namespace Parqueo.Backend
             }
         }
 
-        public void searchValue(string valor, EnumSearchEmpleados tipo)
+        public async Task addValue(Empleados empleado)
+        {
+            try
+            {
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = "/api/Empleados/Create",
+                    Request = empleado
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Empleados>> empleados = JsonConvert.DeserializeObject<ResponseGeneric<List<Empleados>>>(response.Responses.ToString());
+                    GlobalVariables.Empleados = empleados.Responses;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task deleteValue(Empleados empleado)
+        {
+            try
+            {
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = $"/api/Empleados/Delete?idEmpleado={empleado.IdEmpleado}",
+                    Request = new object { }
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Empleados>> empleados = JsonConvert.DeserializeObject<ResponseGeneric<List<Empleados>>>(response.Responses.ToString());
+                    GlobalVariables.Empleados = empleados.Responses;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task editValue(Empleados empleado)
+        {
+            try
+            {
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = "/api/Empleados/Edit",
+                    Request = empleado
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Empleados>> empleados = JsonConvert.DeserializeObject<ResponseGeneric<List<Empleados>>>(response.Responses.ToString());
+                    GlobalVariables.Empleados = empleados.Responses;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task searchValue(string valor, EnumSearchEmpleados tipo)
         {
             try
             {
 
-                if (valor.Equals("*"))
-                {
-                    GlobalVariables.EmpleadosFiltrado = GlobalVariables.Empleados;
-                }
+                string tipoBusqueda = "1";
 
                 switch (tipo)
                 {
                     case EnumSearchEmpleados.Numero:
-                        GlobalVariables.EmpleadosFiltrado = GlobalVariables.Empleados.Where(empleado => empleado.NumeroEmpleado.Contains(valor)).ToList();
+                        tipoBusqueda = "1";
                         break;
 
                     case EnumSearchEmpleados.Nombre:
-                        GlobalVariables.EmpleadosFiltrado = GlobalVariables.Empleados.Where(empleado => empleado.PrimerNombre.Contains(valor)).ToList();
+                        tipoBusqueda = "2";
                         break;
 
                     case EnumSearchEmpleados.Identificacion:
-                        GlobalVariables.EmpleadosFiltrado = GlobalVariables.Empleados.Where(empleado => empleado.Identificacion.Contains(valor)).ToList();
+                        tipoBusqueda = "3";
                         break;
+                }
+
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = $"/api/Empleados/Search?valor={valor}&tipo={tipoBusqueda}",
+                    Request = new object { }
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Empleados>> empleados = JsonConvert.DeserializeObject<ResponseGeneric<List<Empleados>>>(response.Responses.ToString());
+                    GlobalVariables.EmpleadosFiltrado = empleados.Responses;
                 }
             }
             catch (Exception ex)
@@ -100,6 +175,7 @@ namespace Parqueo.Backend
                 throw ex;
             }
         }
+
     }
 }
 

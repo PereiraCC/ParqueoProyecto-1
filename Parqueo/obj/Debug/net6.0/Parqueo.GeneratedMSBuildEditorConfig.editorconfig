@@ -8,53 +8,53 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Parqueo
 build_property.RootNamespace = Parqueo
-build_property.ProjectDir = C:\Users\PereiraCoto\Desktop\test\ParqueoProyecto-1\Parqueo\
+build_property.ProjectDir = C:\Users\PereiraCoto\Desktop\ProyectoCursoWeb\ParqueoProyecto-1\Parqueo\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\PereiraCoto\Desktop\test\ParqueoProyecto-1\Parqueo
+build_property.MSBuildProjectDirectory = C:\Users\PereiraCoto\Desktop\ProyectoCursoWeb\ParqueoProyecto-1\Parqueo
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/Empleado/Index.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/Empleado/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbGVhZG9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/Estadistica/Index.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/Estadistica/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXN0YWRpc3RpY2FcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/Home/About.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/Home/About.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBYm91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/Home/Index.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/Parqueo/Index.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/Parqueo/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFycXVlb1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/Reserva/Index.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/Reserva/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/Shared/Error.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/_ViewImports.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/_ViewStart.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/PereiraCoto/Desktop/test/ParqueoProyecto-1/Parqueo/Views/Shared/_Layout.cshtml]
+[C:/Users/PereiraCoto/Desktop/ProyectoCursoWeb/ParqueoProyecto-1/Parqueo/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-4qvp04gjjp

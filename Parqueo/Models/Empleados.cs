@@ -7,6 +7,8 @@ namespace Parqueo.Models
     {
         public int IdEmpleado { get; set; }
 
+        public int idParqueo { get; set; }
+
         public string NumeroEmpleado { get; set; }
 
         public DateTime FechaIngreso { get; set; }
