@@ -1,58 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parqueo.Backend.Interfaces;
+using Parqueo.Backend.Procesador;
 using Parqueo.Models;
+using Parqueo.Models.Configuracion;
 using Parqueo.Models.Enums;
 
 namespace Parqueo.Backend
 {
     public class AccionesTiquetes : IAccionesTiquetes
     {
+        public ProcesadorAPI procesador;
 
-        public AccionesTiquetes()
+        public AccionesTiquetes(ConfiguracionParqueo configuracionParqueo)
         {
+            procesador = new ProcesadorAPI(configuracionParqueo);
         }
 
-        public void addValue(Tiquetes tiquete)
+        public async Task getAllTiquetes()
         {
             try
             {
-                // Se agrega el nuevo tiquete
-                GlobalVariables.Tiquetes.Add(tiquete);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public void deleteValue(Tiquetes tiquete)
-        {
-            try
-            {
-                // Se eliminar el tiquete
-                GlobalVariables.Tiquetes.Remove(tiquete);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public void editValue(Tiquetes tiquete, int idTiquete)
-        {
-            try
-            {
-                // Se busca el index de tiquete a modificar
-                int indexTiquete = GlobalVariables.Tiquetes.FindIndex(ticket => ticket.idTiquete == idTiquete);
-
-                // Se valida que index sea correcto
-                if (indexTiquete != -1)
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
                 {
-                    // Se modifica el objeto
-                    GlobalVariables.Tiquetes[indexTiquete].fechaSalida = tiquete.fechaSalida;
-                    GlobalVariables.Tiquetes[indexTiquete].montoPagar = tiquete.montoPagar;
-                    GlobalVariables.Tiquetes[indexTiquete].tiempoConsumido = tiquete.tiempoConsumido;
+                    EndPoint = "/api/Tiquetes/GetAll",
+                    Request = new object() { }
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Tiquetes>> tiquetes = JsonConvert.DeserializeObject<ResponseGeneric<List<Tiquetes>>>(response.Responses.ToString());
+                    GlobalVariables.Tiquetes = tiquetes.Responses;
                 }
             }
             catch (Exception ex)
@@ -61,21 +46,134 @@ namespace Parqueo.Backend
             }
         }
 
-        public void searchValue(string valor, EnumSearchTiquetes tipo)
+        public async Task addValue(Tiquetes tiquete)
+        {
+            try
+            {
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = "/api/Tiquetes/Create",
+                    Request = tiquete
+                };
+
+                string json = JsonConvert.SerializeObject(tiquete);
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Tiquetes>> tiquetes = JsonConvert.DeserializeObject<ResponseGeneric<List<Tiquetes>>>(response.Responses.ToString());
+                    GlobalVariables.Tiquetes = tiquetes.Responses;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task deleteValue(Tiquetes tiquete)
+        {
+            try
+            {
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = $"/api/Tiquetes/Delete?idTiquete={tiquete.idTiquete}",
+                    Request = tiquete
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Tiquetes>> tiquetes = JsonConvert.DeserializeObject<ResponseGeneric<List<Tiquetes>>>(response.Responses.ToString());
+                    GlobalVariables.Tiquetes = tiquetes.Responses;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task editValue(Tiquetes tiquete)
+        {
+            try
+            {
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = "/api/Tiquetes/Edit",
+                    Request = tiquete
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Tiquetes>> tiquetes = JsonConvert.DeserializeObject<ResponseGeneric<List<Tiquetes>>>(response.Responses.ToString());
+                    GlobalVariables.Tiquetes = tiquetes.Responses;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task searchValue(string valor, EnumSearchTiquetes tipo)
         {
             try
             {
 
-                if (valor.Equals("*"))
-                {
-                    GlobalVariables.TiquetesFiltrado = GlobalVariables.Tiquetes;
-                }
+                string tipoBusqueda = "1";
 
                 switch (tipo)
                 {
                     case EnumSearchTiquetes.Placa:
-                        GlobalVariables.TiquetesFiltrado = GlobalVariables.Tiquetes.Where(ticket => ticket.placa.Equals(valor)).ToList();
+                        tipoBusqueda = "1";
                         break;
+
+                    case EnumSearchTiquetes.Numero:
+                        tipoBusqueda = "2";
+                        break;
+
+                    case EnumSearchTiquetes.Parqueo:
+                        tipoBusqueda = "3";
+                        break;
+
+                    case EnumSearchTiquetes.Empleado:
+                        tipoBusqueda = "4";
+                        break;
+                }
+
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = $"/api/Tiquetes/Search?valor={valor}&tipo={tipoBusqueda}",
+                    Request = new object { }
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Tiquetes>> tiquetes = JsonConvert.DeserializeObject<ResponseGeneric<List<Tiquetes>>>(response.Responses.ToString());
+                    GlobalVariables.TiquetesFiltrado = tiquetes.Responses;
                 }
             }
             catch (Exception ex)

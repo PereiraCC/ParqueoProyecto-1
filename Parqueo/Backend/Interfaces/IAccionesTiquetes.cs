@@ -6,13 +6,15 @@ namespace Parqueo.Backend.Interfaces
 {
     public interface IAccionesTiquetes
     {
-        void addValue(Tiquetes tiquete);
+        Task getAllTiquetes();
 
-        void editValue(Tiquetes tiquete, int idTiquete);
+        Task addValue(Tiquetes tiquete);
 
-        void searchValue(string valor, EnumSearchTiquetes tipo);
+        Task editValue(Tiquetes tiquete);
 
-        void deleteValue(Tiquetes tiquete);
+        Task searchValue(string valor, EnumSearchTiquetes tipo);
+
+        Task deleteValue(Tiquetes tiquete);
 
     }
 }

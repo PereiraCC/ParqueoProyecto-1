@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Parqueo.Backend;
 using Parqueo.Models;
+using Parqueo.Models.Configuracion;
 
 namespace Parqueo.Controllers;
 
@@ -9,16 +11,21 @@ public class ReservaController : Controller
 {
 
     public AccionesTiquetes accionesTiquetes;
+    public AccionesParqueos accionesParqueos;
+    public AccionesEmpleados accionesEmpleados;
     public AccionesEstadistica accionesEstadistica;
 
-    public ReservaController()
+    public ReservaController(IOptions<ConfiguracionParqueo> options)
     {
-        accionesTiquetes = new AccionesTiquetes();
+        accionesTiquetes = new AccionesTiquetes(options.Value);
+        accionesParqueos = new AccionesParqueos(options.Value);
+        accionesEmpleados = new AccionesEmpleados(options.Value);
         accionesEstadistica = new AccionesEstadistica();
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        await accionesTiquetes.getAllTiquetes();
         ViewTiquetes viewTiquetes = new ViewTiquetes( ) {
             TarifaHora = (GlobalVariables.Parqueos.Count > 0) ? GlobalVariables.Parqueos.FirstOrDefault().TarifaHora : 0,
             TarifaMediaHora = (GlobalVariables.Parqueos.Count > 0) ? GlobalVariables.Parqueos.FirstOrDefault().TarifaMediaHora : 0,
@@ -51,17 +58,17 @@ public class ReservaController : Controller
     public ActionResult editTiquete(Tiquetes tiquete)
     {
         
-        accionesTiquetes.editValue(tiquete, tiquete.idTiquete);
+        accionesTiquetes.editValue(tiquete);
         GlobalVariables.isSearchTiquetes = false;
 
-        accionesEstadistica.addValue(new Venta()
-        {
-            fechaIngreso = tiquete.fechaIngreso,
-            fechaSalida = tiquete.fechaSalida,
-            placa = tiquete.placa,
-            montoPagar = tiquete.montoPagar,
-            tiempoConsumido = tiquete.tiempoConsumido
-        });
+        //accionesEstadistica.addValue(new Venta()
+        //{
+        //    fechaIngreso = tiquete.fechaIngreso,
+        //    fechaSalida = tiquete.fechaSalida,
+        //    placa = tiquete.placa,
+        //    montoPagar = tiquete.montoPagar,
+        //    tiempoConsumido = tiquete.tiempoConsumido
+        //});
 
         return Ok();
     }
@@ -87,6 +94,18 @@ public class ReservaController : Controller
                 enumSearchTiquetes = Models.Enums.EnumSearchTiquetes.Placa;
                 break;
 
+            case "2":
+                enumSearchTiquetes = Models.Enums.EnumSearchTiquetes.Numero;
+                break;
+
+            case "3":
+                enumSearchTiquetes = Models.Enums.EnumSearchTiquetes.Parqueo;
+                break;
+
+            case "4":
+                enumSearchTiquetes = Models.Enums.EnumSearchTiquetes.Empleado;
+                break;
+
         }
         accionesTiquetes.searchValue(valor, enumSearchTiquetes);
 
@@ -101,6 +120,20 @@ public class ReservaController : Controller
         GlobalVariables.isSearchTiquetes = false;
 
         return Ok();
+    }
+
+    [HttpGet]
+    public async Task<JsonResult> getAllParqueos()
+    {
+        await accionesParqueos.getAllParqueos();
+        return Json(GlobalVariables.Parqueos);
+    }
+
+    [HttpGet]
+    public async Task<JsonResult> getAllEmpleados()
+    {
+        await accionesEmpleados.getAllEmpleados();
+        return Json(GlobalVariables.Empleados);
     }
 
 }

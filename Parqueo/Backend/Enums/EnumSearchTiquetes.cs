@@ -3,7 +3,10 @@ namespace Parqueo.Models.Enums
 {
 	public enum EnumSearchTiquetes
 	{
-		Placa
+		Placa,
+		Numero,
+		Parqueo,
+		Empleado
 	}
 }
 

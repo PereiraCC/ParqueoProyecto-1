@@ -18,6 +18,8 @@
             deleteTiquete: '@Url.Action("removeTiquete", "Reserva")',
             searchTiquete: '@Url.Action("searchTiquete", "Reserva")',
             mostrarTiquete: '@Url.Action("mostrarTodos", "Reserva")',
+            getAllParqueos: '@Url.Action("getAllParqueos", "Reserva")',
+            getAllEmpleados: '@Url.Action("getAllEmpleados", "Reserva")',
             tarifaHora: @Model.TarifaHora,
             tarifaMediaHora: @Model.TarifaMediaHora,
             cantidadParqueos: @Model.cantidadParqueo
@@ -37,20 +39,32 @@
 
             <div class="row mb-2">
 
-                <div class="col-3">
+                <div class="col-2">
                     <div class="form-group">
                         <label for="cboFiltrosBusquedaTiquetes">Filtros Busqueda</label>
                         <select class="form-select" aria-label="Disabled select example" id="cboFiltrosBusquedaTiquetes">
                           <option value="0" selected>Seleccione</option>
                           <option value="1">Placa</option>
+                          <option value="2">Numero</option>
+                          <option value="3">Parqueo</option>
+                          <option value="4">Empleado</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="col-3">
+                <div class="col-2">
                     <div class="form-group">
                         <label for="txtValorBusquedaTiquetes">Descripcion</label>
                         <input type="text" class="form-control" id="txtValorBusquedaTiquetes">
+                    </div>
+                </div>
+
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="txtValorBusquedaTiquetes">Descripcion</label>
+                        <select class="form-select" aria-label="Disabled select example" id="cboValorBusquedaTiquetes">
+                            <option value="0" selected>Seleccione</option>
+                        </select>
                     </div>
                 </div>
 
@@ -75,9 +89,11 @@
                 <thead>
                     <tr>
                         <th width="4%">Id</th>
-                        <th width="20%">Fecha y Hora Entrada</th>
-                        <th width="20%">Fecha y Hora Salida</th>
+                        <th width="13%">Fecha y Hora Entrada</th>
+                        <th width="13%">Fecha y Hora Salida</th>
                         <th width="13%">Placa</th>
+                        <th width="13%">Empleado</th>
+                        <th width="13%">Parqueo</th>
                         <th width="40%">Acciones</th>
                     </tr>
                 </thead>
@@ -89,6 +105,8 @@
                                 <td>@tiquetes.fechaIngreso</td>
                                 <td>@tiquetes.fechaSalida</td>
                                 <td>@tiquetes.placa</td>
+                                <td>@tiquetes.nombreEmpleado</td>
+                                <td>@tiquetes.nombreParqueo</td>
                                 <td>
                                     <div class="row">
                                         @if(tiquetes.montoPagar == 0)
@@ -98,6 +116,8 @@
                                                     data-id="@tiquetes.idTiquete"
                                                     data-fechaIngreso="@tiquetes.fechaIngreso"
                                                     data-placa="@tiquetes.placa"
+                                                    data-idEmpleado="@tiquetes.idEmpleado"
+                                                    data-idParqueo="@tiquetes.idParqueo"
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#modalTiquete"
                                                 >
@@ -119,6 +139,8 @@
                                                     data-fechaSalida="@tiquetes.fechaSalida"
                                                     data-montoPagar="@tiquetes.montoPagar"
                                                     data-tiempoConsumido="@tiquetes.tiempoConsumido"
+                                                    data-idEmpleado="@tiquetes.idEmpleado"
+                                                    data-idParqueo="@tiquetes.idParqueo"
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#modalTiquete"
                                                 >
@@ -159,14 +181,32 @@
 
                             <div class="row mb-2">
 
-                                <div class="col-6">
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label for="txtFechaIngresoTiquetes">Hora Ingreso</label>
                                         <input type="time" data-date-format="DD MMMM YYYY" class="form-control" id="txtFechaIngresoTiquetes">
                                     </div>
                                 </div>
 
-                                <div class="col-6">
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="txtPlacaTiquetes">Parqueo</label>
+                                        <select class="form-control" id="cboParqueoTiquetes">
+                                            <option value="0" selected>Seleccione</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="txtPlacaTiquetes">Empleado</label>
+                                        <select class="form-control" id="cboEmpleadoTiquetes">
+                                            <option value="0" selected>Seleccione</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label for="txtPlacaTiquetes">Número Placa</label>
                                         <input type="text" class="form-control" id="txtPlacaTiquetes">

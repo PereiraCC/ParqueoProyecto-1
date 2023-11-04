@@ -10,13 +10,18 @@ var tiquetes = function () {
     var tarifaHora = 0;
     var tarifaMediaHora = 0;
     var cantidadParqueos = 0;
+    var listadoEmpleados = [];
+    var listadoParqueos = [];
 
     // Campos de agregar tiquete
     var txtFechaIngreso = $("#txtFechaIngresoTiquetes");
+    var cboParqueoTiquetes = $('#cboParqueoTiquetes');
+    var cboEmpleadoTiquetes = $('#cboEmpleadoTiquetes');
     var txtFechaSalida = $("#txtFechaSalidaTiquetes");
     var txtPlaca = $("#txtPlacaTiquetes");
     var txtMontoPagar = $("#txtMontoPagarTiquetes");
     var txtSearchTiquete = $("#txtValorBusquedaTiquetes");
+    var cboSearchTiquete = $("#cboValorBusquedaTiquetes");
     var txtTiempoConsumo = $('#txtTiempoConsumidoTiquetes');
     var cboFiltrosBusqueda = $('#cboFiltrosBusquedaTiquetes');
 
@@ -34,12 +39,13 @@ var tiquetes = function () {
 
         initArgs = args;
 
-        tarifaHora = initArgs.tarifaHora;
-        tarifaMediaHora = initArgs.tarifaMediaHora;
-        cantidadParqueos = initArgs.cantidadParqueos;
-
         txtMontoPagar.prop('disabled', true);
         txtTiempoConsumo.prop('disabled', true);
+        txtSearchTiquete.prop('disabled', true);
+        cboSearchTiquete.prop('disabled', true);
+
+        fnChargeCboParqueo();
+        fnChargeCboEmpleado();
 
         // Se establece los eventos de los botones
         btnAddTiquete.click(fnBotton);
@@ -50,12 +56,17 @@ var tiquetes = function () {
                 id: $(this).attr("data-id"),
                 fechaIngreso: $(this).attr("data-fechaIngreso"),
                 placa: $(this).attr("data-placa"),
+                idEmpleado: $(this).attr("data-idEmpleado"),
+                idParqueo: $(this).attr("data-idParqueo"),
             };
             
             txtFechaIngreso.val(getHour(editTiquete.fechaIngreso));
             txtPlaca.val(editTiquete.placa);
+            cboParqueoTiquetes.val(editTiquete.idParqueo);
+            cboEmpleadoTiquetes.val(editTiquete.idEmpleado);
 
             txtFechaSalida.prop('disabled', false);
+            txtFechaIngreso.prop('disabled', true);
 
             btnAddTiquete.html("Cobrar Tiquete");
             isEditTiquete = true;
@@ -72,6 +83,8 @@ var tiquetes = function () {
                 fechaSalida: $(this).attr("data-fechaSalida"),
                 montoPagar: $(this).attr("data-montoPagar"),
                 tiempoConsumido: $(this).attr("data-tiempoConsumido"),
+                idEmpleado: $(this).attr("data-idEmpleado"),
+                idParqueo: $(this).attr("data-idParqueo"),
             };
 
             txtFechaIngreso.val(getHour(editTiquete.fechaIngreso));
@@ -79,12 +92,16 @@ var tiquetes = function () {
             txtPlaca.val(editTiquete.placa);
             txtMontoPagar.val(editTiquete.montoPagar);
             txtTiempoConsumo.val(editTiquete.tiempoConsumido);
+            cboParqueoTiquetes.val(editTiquete.idEmpleado);
+            cboEmpleadoTiquetes.val(editTiquete.idParqueo);
 
             txtFechaIngreso.prop('disabled', true);
             txtFechaSalida.prop('disabled', true);
             txtPlaca.prop('disabled', true);
             txtMontoPagar.prop('disabled', true);
             txtTiempoConsumo.prop('disabled', true);
+            cboParqueoTiquetes.prop('disabled', true);
+            cboEmpleadoTiquetes.prop('disabled', true);
 
             btnAddTiquete.css("visibility", "hidden");
             isVerTiquete = true;
@@ -116,6 +133,76 @@ var tiquetes = function () {
             fnChangeFechaSalida(e);
         });
 
+        cboFiltrosBusqueda.change(function (e) {
+            fnChangeFiltroBusqueda(e);
+        });
+
+    }
+
+    const fnChargeCboParqueo = function () {
+        
+        // Se envia la peticion atravez de Ajax
+        $.ajax({
+            async: true,
+            type: "GET",
+            url: initArgs.getAllParqueos,
+            data: null,
+            datatype: "json",
+            cache: true,
+            success: function (response) {
+                listadoParqueos = response;
+                response.forEach((parqueo) => {
+
+                    cboParqueoTiquetes.append(`<option value="${parqueo.idParqueo}">
+                                                   ${parqueo.nombre}
+                                              </option>`)
+
+                });
+            },
+            error: function (e) {
+                console.log(e);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Ocurrio un error al obtener los parqueos, por favor intentelo de nuevo.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        });
+
+    }
+
+    const fnChargeCboEmpleado = function () {
+        
+        // Se envia la peticion atravez de Ajax
+        $.ajax({
+            async: true,
+            type: "GET",
+            url: initArgs.getAllEmpleados,
+            data: null,
+            datatype: "json",
+            cache: true,
+            success: function (response) {
+                listadoEmpleados = response;
+                response.forEach((empleado) => {
+
+                    cboEmpleadoTiquetes.append(`<option value="${empleado.idEmpleado}">
+                                                   ${empleado.primerNombre} ${empleado.primerApellido}
+                                              </option>`)
+
+                });
+            },
+            error: function (e) {
+                console.log(e);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Ocurrio un error al obtener los parqueos, por favor intentelo de nuevo.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        });
+
     }
 
     const fnBotton = function (e) {
@@ -137,16 +224,16 @@ var tiquetes = function () {
             return;
         }
 
-        if (cantidadParqueos != 1) {
-            Swal.fire({
-                title: 'Advertencia',
-                text: 'No existe ningun parqueo, por favor crear un parqueo',
-                icon: 'warning',
-                confirmButtonText: 'Aceptar'
-            });
+        //if (cantidadParqueos != 1) {
+        //    Swal.fire({
+        //        title: 'Advertencia',
+        //        text: 'No existe ningun parqueo, por favor crear un parqueo',
+        //        icon: 'warning',
+        //        confirmButtonText: 'Aceptar'
+        //    });
 
-            return;
-        }
+        //    return;
+        //}
         
         // Se envia la peticion atravez de Ajax
         $.ajax({
@@ -156,6 +243,8 @@ var tiquetes = function () {
             data: {
                 fechaIngreso: txtFechaIngreso.val(),
                 placa: txtPlaca.val(),
+                idEmpleado: cboEmpleadoTiquetes.val(),
+                idParqueo: cboParqueoTiquetes.val()
             },
             datatype: "json",
             cache: true,
@@ -421,8 +510,9 @@ var tiquetes = function () {
     const fnSearchTiquete = function (e) {
 
         e.preventDefault();
+        var valueSearch = "";
 
-        if (txtSearchTiquete.val() == '' || cboFiltrosBusqueda.val() == '0') {
+        if ((txtSearchTiquete.val() == '' && cboSearchTiquete.val() == 0) || cboFiltrosBusqueda.val() == '0') {
             Swal.fire({
                 title: 'Error!',
                 text: 'Seleccione el filtro a buscar y el valor de busqueda.',
@@ -433,13 +523,19 @@ var tiquetes = function () {
             return;
         }
 
+        if (cboFiltrosBusqueda.val() == "3" || cboFiltrosBusqueda.val() == "4") {
+            valueSearch = cboSearchTiquete.val();
+        } else {
+            valueSearch = txtSearchTiquete.val();
+        }
+
         // Se envia la peticion atravez de Ajax
         $.ajax({
             async: true,
             type: "GET",
             url: initArgs.searchTiquete,
             data: {
-                valor: txtSearchTiquete.val(),
+                valor: valueSearch,
                 filtro: cboFiltrosBusqueda.val()
             },
             datatype: "json",
@@ -497,9 +593,13 @@ var tiquetes = function () {
         txtFechaSalida.val('');
         txtMontoPagar.val('');
         txtTiempoConsumo.val('');
+        cboParqueoTiquetes.val(0);
+        cboEmpleadoTiquetes.val(0);
 
         txtFechaIngreso.prop('disabled', false);
         txtPlaca.prop('disabled', false);
+        cboParqueoTiquetes.prop('disabled', false);
+        cboEmpleadoTiquetes.prop('disabled', false);
 
         btnAddTiquete.css("visibility", "visible");
         btnAddTiquete.html("Reservar");
@@ -513,6 +613,11 @@ var tiquetes = function () {
         
         e.preventDefault();
         const time = getDiferentHours();
+
+        var idParqueoSeleted = cboParqueoTiquetes.val();
+
+        tarifaHora = listadoParqueos.find(parqueo => parqueo.idParqueo == idParqueoSeleted).tarifaHora;
+        tarifaMediaHora = listadoParqueos.find(parqueo => parqueo.idParqueo == idParqueoSeleted).tarifaMediaHora;
 
         const cantidadHours = time.split(':')[0];
         const cantidadMinutes = time.split(":")[1];
@@ -559,6 +664,49 @@ var tiquetes = function () {
         ss = ('0' + ss).slice(-2)
 
         return `${hh}:${mm}:${ss}`;
+    }
+
+    const fnChangeFiltroBusqueda = function (e) {
+
+        e.preventDefault();
+
+        const value = e.target.value;
+
+        if (value == "3") {
+
+            txtSearchTiquete.prop('disabled', true);
+            cboSearchTiquete.prop('disabled', false);
+
+            cboSearchTiquete.find('option').remove();
+
+            listadoParqueos.forEach((parqueo) => {
+
+                cboSearchTiquete.append(`<option value="${parqueo.idParqueo}">
+                                                   ${parqueo.nombre}
+                                              </option>`)
+
+            });
+
+        } else if (value == "4") {
+
+            txtSearchTiquete.prop('disabled', true);
+            cboSearchTiquete.prop('disabled', false);
+
+            cboSearchTiquete.find('option').remove();
+
+            listadoEmpleados.forEach((empleado) => {
+
+                cboSearchTiquete.append(`<option value="${empleado.idEmpleado}">
+                                                   ${empleado.primerNombre} ${empleado.primerApellido}
+                                              </option>`)
+
+            });
+
+        } else {
+            txtSearchTiquete.prop('disabled', false);
+            cboSearchTiquete.prop('disabled', true);
+        }
+
     }
 
     return {
