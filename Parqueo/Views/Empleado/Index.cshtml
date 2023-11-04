@@ -17,7 +17,8 @@
             editEmpleado: '@Url.Action("editEmpleado", "Empleado")',
             deleteEmpleado: '@Url.Action("removeEmpleado", "Empleado")',
             searchEmpleado: '@Url.Action("searchEmpleado", "Empleado")',
-            mostrarEmpleado: '@Url.Action("mostrarTodos", "Empleado")'
+            mostrarEmpleado: '@Url.Action("mostrarTodos", "Empleado")',
+            getAllParqueos: '@Url.Action("getAllParqueos", "Empleado")'
         });
     });
 </script>
@@ -99,6 +100,7 @@
                                             <button type="button" class="btn btn-info btnEdit"
                                                 data-id="@empleado.IdEmpleado"
                                                 data-numeroEmpleado="@empleado.NumeroEmpleado"
+                                                data-idParqueo="@empleado.idParqueo"
                                                 data-identificacion="@empleado.Identificacion"
                                                 data-primerNombre="@empleado.PrimerNombre"
                                                 data-segundoNombre="@empleado.SegundoNombre"
@@ -155,27 +157,35 @@
 
                             <div class="row mb-2">
 
-                                <div class="col-4">
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label for="txtNumeroEmpleadoEmpleado">Numero Empleado</label>
                                         <input type="number" class="form-control" id="txtNumeroEmpleadoEmpleado">
                                     </div>
                                 </div>
 
-                                <div class="col-4">
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="cboParqueoEmpleado">Parqueo</label>
+                                        <select class="form-control" id="cboParqueoEmpleado">
+                                            <option value="0" selected>Seleccione</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label for="txtIdentificacionEmpleado">Identificacion</label>
                                         <input type="text" class="form-control" id="txtIdentificacionEmpleado">
                                     </div>
                                 </div>
 
-                                <div class="col-4">
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label for="txtFechaIngresoEmpleado">Fecha Ingreso</label>
                                         <input type="date" class="form-control" id="txtFechaIngresoEmpleado">
                                     </div>
                                 </div>
-
                 
 
                             </div>

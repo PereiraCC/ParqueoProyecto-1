@@ -96,5 +96,11 @@ public class EmpleadoController : Controller
         return View("Index", GlobalVariables.Empleados);
     }
 
+    [HttpGet]
+    public JsonResult getAllParqueos()
+    {
+        return Json(GlobalVariables.Parqueos);
+    }
+
 }
 

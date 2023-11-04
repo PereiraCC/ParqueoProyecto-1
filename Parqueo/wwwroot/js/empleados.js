@@ -10,6 +10,7 @@ var empleados = function () {
 
     // Campos
     var txtNumeroEmpleado = $("#txtNumeroEmpleadoEmpleado");
+    var cboParqueoEmpleado = $('#cboParqueoEmpleado');
     var txtIdentificacion = $("#txtIdentificacionEmpleado");
     var txtFechaIngreso = $("#txtFechaIngresoEmpleado");
     var txtPrimerNombre = $("#txtPrimerNombreEmpleados");
@@ -37,6 +38,8 @@ var empleados = function () {
 
         initArgs = args;
 
+        fnChargeCboParqueo();
+
         // Se establece los eventos de los botones
         btnAddEmpleado.click(fnBotton);
 
@@ -45,6 +48,7 @@ var empleados = function () {
             const editEmpleado = {
                 id: $(this).attr("data-id"),
                 numeroEmpleado: $(this).attr("data-numeroEmpleado"),
+                idParqueo: $(this).attr("data-idParqueo"),
                 identificacion: $(this).attr("data-identificacion"),
                 primerNombre: $(this).attr("data-primerNombre"),
                 segundoNombre: $(this).attr("data-segundoNombre"),
@@ -59,6 +63,7 @@ var empleados = function () {
             };
             
             txtNumeroEmpleado.val(editEmpleado.numeroEmpleado);
+            cboParqueoEmpleado.val(editEmpleado.idParqueo);
             txtIdentificacion.val(editEmpleado.identificacion);
             txtPrimerNombre.val(editEmpleado.primerNombre);
             txtSegundoNombre.val(editEmpleado.segundoNombre);
@@ -97,6 +102,39 @@ var empleados = function () {
 
     }
 
+    const fnChargeCboParqueo = function () {
+
+        // Se envia la peticion atravez de Ajax
+        $.ajax({
+            async: true,
+            type: "GET",
+            url: initArgs.getAllParqueos,
+            data: null,
+            datatype: "json",
+            cache: true,
+            success: function (response) {
+                
+                response.forEach( (parqueo) => {
+
+                    cboParqueoEmpleado.append(`<option value="${parqueo.idParqueo}">
+                                                   ${parqueo.nombre}
+                                              </option>`)
+
+                });              
+            },
+            error: function (e) {
+                console.log(e);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Ocurrio un error al obtener los parqueos, por favor intentelo de nuevo.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        });
+        
+    }
+
     const fnBotton = function (e) {
 
         if (!isEditEmpleado) {
@@ -123,6 +161,7 @@ var empleados = function () {
             url: initArgs.addEmpleado,
             data: {
                 numeroEmpleado: txtNumeroEmpleado.val(),
+                idParqueo: cboParqueoEmpleado.val(),
                 fechaIngreso: txtFechaIngreso.val(),
                 primerNombre: txtPrimerNombre.val(),
                 segundoNombre: txtSegundoNombre.val(),

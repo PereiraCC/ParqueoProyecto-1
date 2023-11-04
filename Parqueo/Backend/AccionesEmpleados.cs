@@ -57,6 +57,8 @@ namespace Parqueo.Backend
                     Request = empleado
                 };
 
+                string json = JsonConvert.SerializeObject(empleado);
+
                 // Se comsume el procesador
                 ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
 
