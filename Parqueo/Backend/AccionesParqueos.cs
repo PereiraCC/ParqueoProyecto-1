@@ -1,61 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parqueo.Backend.Interfaces;
+using Parqueo.Backend.Procesador;
 using Parqueo.Models;
+using Parqueo.Models.Configuracion;
 using Parqueo.Models.Enums;
 
 namespace Parqueo.Backend
 {
     public class AccionesParqueos : IAccionesParqueos
     {
+        public ProcesadorAPI procesador;
 
-        public AccionesParqueos()
+        public AccionesParqueos(ConfiguracionParqueo configuracionParqueo)
         {
+            procesador = new ProcesadorAPI(configuracionParqueo);
         }
 
-        public void addValue(Parqueos parqueo)
+        public async Task getAllParqueos()
         {
             try
             {
-                // Se agrega el nuevo parqueo
-                GlobalVariables.Parqueos.Add(parqueo);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public void deleteValue(Parqueos parqueo)
-        {
-            try
-            {
-                // Se eliminar el tiquete
-                GlobalVariables.Parqueos.Remove(parqueo);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public void editValue(Parqueos parqueo, int idParqueo)
-        {
-            try
-            {
-                // Se busca el index de parqueo a modificar
-                int indexParqueo = GlobalVariables.Parqueos.FindIndex(par => par.idParqueo == idParqueo);
-
-                // Se valida que index sea correcto
-                if (indexParqueo != -1)
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
                 {
-                    // Se modifica el objeto
-                    GlobalVariables.Parqueos[indexParqueo].Nombre = parqueo.Nombre;
-                    GlobalVariables.Parqueos[indexParqueo].CantidadMaximaVehiculos = parqueo.CantidadMaximaVehiculos;
-                    GlobalVariables.Parqueos[indexParqueo].HoraApertura = parqueo.HoraApertura;
-                    GlobalVariables.Parqueos[indexParqueo].HoraCierre = parqueo.HoraCierre;
-                    GlobalVariables.Parqueos[indexParqueo].TarifaHora = parqueo.TarifaHora;
-                    GlobalVariables.Parqueos[indexParqueo].TarifaMediaHora = parqueo.TarifaMediaHora;
+                    EndPoint = "/api/Parqueo/GetAll",
+                    Request = new object() { }
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Parqueos>> parqueos = JsonConvert.DeserializeObject<ResponseGeneric<List<Parqueos>>>(response.Responses.ToString());
+                    GlobalVariables.Parqueos = parqueos.Responses;
                 }
             }
             catch (Exception ex)
@@ -64,29 +46,127 @@ namespace Parqueo.Backend
             }
         }
 
-        public void searchValue(string valor, EnumSearchParqueos tipo)
+        public async Task addValue(Parqueos parqueo)
         {
             try
             {
-
-                if (valor.Equals("*"))
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
                 {
-                    GlobalVariables.ParqueosFiltrado = GlobalVariables.Parqueos;
+                    EndPoint = "/api/Parqueo/Create",
+                    Request = parqueo
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Parqueos>> parqueos = JsonConvert.DeserializeObject<ResponseGeneric<List<Parqueos>>>(response.Responses.ToString());
+                    GlobalVariables.Parqueos = parqueos.Responses;
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task deleteValue(Parqueos parqueo)
+        {
+            try
+            {
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = $"/api/Parqueo/Delete?idParqueo={parqueo.idParqueo}",
+                    Request = new object() { }
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Parqueos>> parqueos = JsonConvert.DeserializeObject<ResponseGeneric<List<Parqueos>>>(response.Responses.ToString());
+                    GlobalVariables.Parqueos = parqueos.Responses;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task editValue(Parqueos parqueo)
+        {
+            try
+            {
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = "/api/Parqueo/Edit",
+                    Request = parqueo
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Parqueos>> parqueos = JsonConvert.DeserializeObject<ResponseGeneric<List<Parqueos>>>(response.Responses.ToString());
+                    GlobalVariables.Parqueos = parqueos.Responses;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task searchValue(string valor, EnumSearchParqueos tipo)
+        {
+            try
+            {
+                string tipoBusqueda = "1";
 
                 switch (tipo)
                 {
-                    case EnumSearchParqueos.CantididadVehiculos:
-                        GlobalVariables.ParqueosFiltrado = GlobalVariables.Parqueos.Where(parqueo => parqueo.CantidadMaximaVehiculos.ToString() == valor).ToList();
+                    case EnumSearchParqueos.Nombre:
+                        tipoBusqueda = "1";
                         break;
 
-                    case EnumSearchParqueos.Nombre:
-                        GlobalVariables.ParqueosFiltrado = GlobalVariables.Parqueos.Where(parqueo => parqueo.Nombre.Equals(valor)).ToList();
+                    case EnumSearchParqueos.CantididadVehiculos:
+                        tipoBusqueda = "2";
                         break;
 
                     case EnumSearchParqueos.Tarifa:
-                        GlobalVariables.ParqueosFiltrado = GlobalVariables.Parqueos.Where(parqueo => parqueo.TarifaHora.ToString().Equals(valor) || parqueo.TarifaMediaHora.ToString().Equals(valor)).ToList();
+                        tipoBusqueda = "3";
                         break;
+                }
+
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = $"/api/Parqueo/Search?valor={valor}&tipo={tipoBusqueda}",
+                    Request = new object { }
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<List<Parqueos>> parqueos = JsonConvert.DeserializeObject<ResponseGeneric<List<Parqueos>>>(response.Responses.ToString());
+                    GlobalVariables.ParqueosFiltrado = parqueos.Responses;
                 }
             }
             catch (Exception ex)

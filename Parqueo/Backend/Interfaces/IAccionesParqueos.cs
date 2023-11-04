@@ -6,13 +6,15 @@ namespace Parqueo.Backend.Interfaces
 {
     public interface IAccionesParqueos
     {
-        void addValue(Parqueos parqueo);
+        Task getAllParqueos();
 
-        void editValue(Parqueos parqueo, int idParqueo);
+        Task addValue(Parqueos parqueo);
 
-        void searchValue(string valor, EnumSearchParqueos tipo);
+        Task editValue(Parqueos parqueo);
 
-        void deleteValue(Parqueos parqueo);
+        Task searchValue(string valor, EnumSearchParqueos tipo);
+
+        Task deleteValue(Parqueos parqueo);
 
     }
 }

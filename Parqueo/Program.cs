@@ -29,26 +29,6 @@ GlobalVariables.isSearchTiquetes = false;
 GlobalVariables.Parqueos = new List<Parqueos>();
 GlobalVariables.ParqueosFiltrado = new List<Parqueos>();
 GlobalVariables.isSearchParqueos = false;
-GlobalVariables.Parqueos.Add(new Parqueos()
-{
-    idParqueo = 1,
-    Nombre = "Premium",
-    CantidadMaximaVehiculos = 50,
-    HoraApertura = DateTime.Now,
-    HoraCierre = DateTime.Now,
-    TarifaHora = 1000,
-    TarifaMediaHora = 500,
-});
-GlobalVariables.Parqueos.Add(new Parqueos()
-{
-    idParqueo = 2,
-    Nombre = "Normal",
-    CantidadMaximaVehiculos = 50,
-    HoraApertura = DateTime.Now,
-    HoraCierre = DateTime.Now,
-    TarifaHora = 1000,
-    TarifaMediaHora = 500,
-});
 
 // Se establecen la inicializacion de Empleados
 GlobalVariables.Empleados = new List<Empleados>();

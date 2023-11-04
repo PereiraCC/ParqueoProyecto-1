@@ -7,7 +7,6 @@ var parqueos = function () {
     var isEditParqueo = false;
     var idParqueoSeleccionado = 0;
     var nombreParqueoSeleccionado = '';
-    var cantidadParqueos = 0;
 
     // Campos
     var txtNombre = $("#txtNombreParqueos");
@@ -97,16 +96,17 @@ var parqueos = function () {
 
         e.preventDefault();
 
-        if (cantidadParqueos == 1) {
-            Swal.fire({
-                title: 'Advertencia',
-                text: 'Ya existe un parqueo existente. No se puede agregar más de un parqueo.',
-                icon: 'warning',
-                confirmButtonText: 'Aceptar'
-            });
+        // Se desactiva esta validacion
+        //if (cantidadParqueos == 1) {
+        //    Swal.fire({
+        //        title: 'Advertencia',
+        //        text: 'Ya existe un parqueo existente. No se puede agregar más de un parqueo.',
+        //        icon: 'warning',
+        //        confirmButtonText: 'Aceptar'
+        //    });
 
-            return;
-        }
+        //    return;
+        //}
 
         // Se validan los campos
         if (!validationFieldAdd()) {

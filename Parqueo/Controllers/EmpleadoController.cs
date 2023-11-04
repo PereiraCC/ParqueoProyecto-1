@@ -11,10 +11,12 @@ public class EmpleadoController : Controller
 {
 
     public AccionesEmpleados accionesEmpleados;
+    public AccionesParqueos accionesParqueos;
 
     public EmpleadoController(IOptions<ConfiguracionParqueo> options)
     {
         accionesEmpleados = new AccionesEmpleados(options.Value);
+        accionesParqueos = new AccionesParqueos(options.Value);
     }
 
     public async Task<IActionResult> Index()
@@ -97,8 +99,9 @@ public class EmpleadoController : Controller
     }
 
     [HttpGet]
-    public JsonResult getAllParqueos()
+    public async Task<JsonResult> getAllParqueos()
     {
+        await accionesParqueos.getAllParqueos();
         return Json(GlobalVariables.Parqueos);
     }
 

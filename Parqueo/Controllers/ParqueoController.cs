@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Parqueo.Backend;
 using Parqueo.Models;
+using Parqueo.Models.Configuracion;
 
 namespace Parqueo.Controllers;
 
@@ -10,13 +12,14 @@ public class ParqueoController : Controller
 
     public AccionesParqueos accionesParqueos;
 
-    public ParqueoController()
+    public ParqueoController(IOptions<ConfiguracionParqueo> options)
     {
-        accionesParqueos = new AccionesParqueos();
+        accionesParqueos = new AccionesParqueos(options.Value);
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        await accionesParqueos.getAllParqueos();
         return View( (GlobalVariables.isSearchParqueos) ? GlobalVariables.ParqueosFiltrado : GlobalVariables.Parqueos);
     }
 
@@ -43,7 +46,7 @@ public class ParqueoController : Controller
     public ActionResult editParqueo(Parqueos parqueo)
     {
         
-        accionesParqueos.editValue(parqueo, parqueo.idParqueo);
+        accionesParqueos.editValue(parqueo);
         GlobalVariables.isSearchParqueos = false;
 
         return View("Index", GlobalVariables.Parqueos);
