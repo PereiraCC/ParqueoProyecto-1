@@ -3,9 +3,10 @@ namespace Parqueo.Models.Enums
 {
 	public enum EnumSearchEstadistica
 	{
-		Monto,
-		Placa,
-		Horas,
+		Mes,
+		Dia,
+		Tiempo,
+		ParqueosVendeMas
 	}
 }
 

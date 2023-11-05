@@ -7,6 +7,8 @@ namespace Parqueo.Models.Interfaces
 
 		string NombreParqueo { get; set; }
 
+		string NombreEmpleado { get; set; }
+
 		DateTime fechaIngreso { get; set; }
 
 		DateTime fechaSalida { get; set; }

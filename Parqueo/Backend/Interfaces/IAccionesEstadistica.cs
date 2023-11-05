@@ -6,9 +6,11 @@ namespace Parqueo.Backend.Interfaces
 {
     public interface IAccionesEstadistica
     {
-        void addValue(Venta venta);
+        Task getAllEstadistica();
 
-        void searchValue(string valor, EnumSearchEstadistica tipo);
+        Task addValue(Venta venta);
+
+        Task searchValue(string valor, EnumSearchEstadistica tipo);
 
     }
 }

@@ -5,6 +5,14 @@ namespace Parqueo.Models.Interfaces
 	{
 		int idTiquete { get; set; }
 
+		int idParqueo { get; set; }
+
+		string nombreParqueo { get; set; }
+
+		int idEmpleado { get; set; }
+
+		string nombreEmpleado { get; set; }
+
 		DateTime fechaIngreso { get; set; }
 
 		DateTime fechaSalida { get; set; }

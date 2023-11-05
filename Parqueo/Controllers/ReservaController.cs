@@ -20,7 +20,7 @@ public class ReservaController : Controller
         accionesTiquetes = new AccionesTiquetes(options.Value);
         accionesParqueos = new AccionesParqueos(options.Value);
         accionesEmpleados = new AccionesEmpleados(options.Value);
-        accionesEstadistica = new AccionesEstadistica();
+        accionesEstadistica = new AccionesEstadistica(options.Value);
     }
 
     public async Task<IActionResult> Index()
@@ -61,14 +61,16 @@ public class ReservaController : Controller
         accionesTiquetes.editValue(tiquete);
         GlobalVariables.isSearchTiquetes = false;
 
-        //accionesEstadistica.addValue(new Venta()
-        //{
-        //    fechaIngreso = tiquete.fechaIngreso,
-        //    fechaSalida = tiquete.fechaSalida,
-        //    placa = tiquete.placa,
-        //    montoPagar = tiquete.montoPagar,
-        //    tiempoConsumido = tiquete.tiempoConsumido
-        //});
+        accionesEstadistica.addValue(new Venta()
+        {
+            fechaIngreso = tiquete.fechaIngreso,
+            NombreEmpleado = tiquete.nombreEmpleado,
+            NombreParqueo = tiquete.nombreParqueo,
+            fechaSalida = tiquete.fechaSalida,
+            placa = tiquete.placa,
+            montoPagar = tiquete.montoPagar,
+            tiempoConsumido = tiquete.tiempoConsumido
+        });
 
         return Ok();
     }

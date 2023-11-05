@@ -443,7 +443,11 @@ var tiquetes = function () {
                 fechaSalida: txtFechaSalida.val(),
                 placa: txtPlaca.val(),
                 montoPagar: txtMontoPagar.val(),
-                tiempoConsumido: txtTiempoConsumo.val()
+                tiempoConsumido: txtTiempoConsumo.val(),
+                nombreEmpleado: listadoEmpleados.find(empleado => empleado.idEmpleado == cboEmpleadoTiquetes.val()).primerNombre + listadoEmpleados.find(empleado => empleado.idEmpleado == cboEmpleadoTiquetes.val()).primerApellido,
+                idEmpleado: cboEmpleadoTiquetes.val(),
+                nombreParqueo: listadoParqueos.find(parqueo => parqueo.idParqueo == cboParqueoTiquetes.val()).nombre,
+                idParqueo: cboParqueoTiquetes.val(),
             },
             datatype: "json",
             cache: true,

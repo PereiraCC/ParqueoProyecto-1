@@ -1,41 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Parqueo.Backend.Interfaces;
+using Parqueo.Backend.Procesador;
 using Parqueo.Models;
+using Parqueo.Models.Configuracion;
 using Parqueo.Models.Enums;
 
 namespace Parqueo.Backend
 {
     public class AccionesEstadistica : IAccionesEstadistica
     {
+        public ProcesadorAPI procesador;
 
-        public AccionesEstadistica()
+        public AccionesEstadistica(ConfiguracionParqueo configuracionParqueo)
         {
+            procesador = new ProcesadorAPI(configuracionParqueo);
         }
 
-        public void addValue(Venta venta)
+        public async Task getAllEstadistica()
         {
             try
             {
-                // Se agrega el nombre del parqueo
-                venta.NombreParqueo = GlobalVariables.Parqueos.FirstOrDefault().Nombre;
-
-                // Se calcula el monto
-                GlobalVariables.Estadisticas.montoGenerado += venta.montoPagar;
-                GlobalVariables.EstadisticasFiltrado.montoGenerado += venta.montoPagar;
-
-                if (GlobalVariables.Estadisticas.ventas.Count() > 0)
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
                 {
-                    int ultimoId = GlobalVariables.Estadisticas.ventas.LastOrDefault().idVenta;
-                    venta.idVenta = ultimoId + 1;
-                }
-                else
-                {
-                    venta.idVenta = 1;
-                }
+                    EndPoint = "/api/Estadistica/GetAll",
+                    Request = new object() { }
+                };
 
-                // Se agrega el nuevo tiquete
-                GlobalVariables.Estadisticas.ventas.Add(venta);
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<Estadistica> estadistica = JsonConvert.DeserializeObject<ResponseGeneric<Estadistica>>(response.Responses.ToString());
+                    GlobalVariables.Estadisticas = estadistica.Responses;
+                }
             }
             catch (Exception ex)
             {
@@ -43,29 +46,87 @@ namespace Parqueo.Backend
             }
         }
 
-        public void searchValue(string valor, EnumSearchEstadistica tipo)
+        public async Task addValue(Venta venta)
+        {
+            try
+            {
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = "/api/Estadistica/Create",
+                    Request = venta
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<Estadistica> estadistica = JsonConvert.DeserializeObject<ResponseGeneric<Estadistica>>(response.Responses.ToString());
+                    GlobalVariables.Estadisticas = estadistica.Responses;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task searchValue(string valor, EnumSearchEstadistica tipo)
         {
             try
             {
 
-                if (valor.Equals("*"))
-                {
-                    GlobalVariables.EstadisticasFiltrado.ventas = GlobalVariables.Estadisticas.ventas;
-                }
+                string tipoBusqueda = "1";
 
                 switch (tipo)
                 {
-                    case EnumSearchEstadistica.Monto:
-                        GlobalVariables.EstadisticasFiltrado.ventas = GlobalVariables.Estadisticas.ventas.Where(estadistica => estadistica.montoPagar.ToString().Equals(valor)).ToList();
+                    case EnumSearchEstadistica.Mes:
+                        tipoBusqueda = "1";
                         break;
 
-                    case EnumSearchEstadistica.Placa:
-                        GlobalVariables.EstadisticasFiltrado.ventas = GlobalVariables.Estadisticas.ventas.Where(estadistica => estadistica.placa.Equals(valor)).ToList();
+                    case EnumSearchEstadistica.Dia:
+                        tipoBusqueda = "2";
                         break;
 
-                    case EnumSearchEstadistica.Horas:
-                        GlobalVariables.EstadisticasFiltrado.ventas = GlobalVariables.Estadisticas.ventas.Where(estadistica => estadistica.fechaIngreso.ToString("HH:mm").Equals(valor)).ToList();
+                    case EnumSearchEstadistica.Tiempo:
+                        tipoBusqueda = "3";
                         break;
+
+                    case EnumSearchEstadistica.ParqueosVendeMas:
+                        tipoBusqueda = "4";
+                        break;
+                }
+
+                var endPoint = "";
+
+                if(tipoBusqueda == "4")
+                {
+                    endPoint = $"/api/Estadistica/Search?valor={0}&tipo={tipoBusqueda}";
+                } 
+                else
+                {
+                    endPoint = $"/api/Estadistica/Search?valor={valor}&tipo={tipoBusqueda}";
+                }
+
+                // Se crea el request
+                RequestGeneric requestGeneric = new RequestGeneric()
+                {
+                    EndPoint = endPoint,
+                    Request = new object() { }
+                };
+
+                // Se comsume el procesador
+                ResponseGeneric<object> response = await procesador.Procesar(requestGeneric);
+
+                // Se valida la respuesta
+                if (response.Status == 0)
+                {
+                    // Se parse el response
+                    ResponseGeneric<Estadistica> estadistica = JsonConvert.DeserializeObject<ResponseGeneric<Estadistica>>(response.Responses.ToString());
+                    GlobalVariables.EstadisticasFiltrado = estadistica.Responses;
                 }
             }
             catch (Exception ex)

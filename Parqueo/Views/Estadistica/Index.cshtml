@@ -14,7 +14,7 @@
     $(document).ready(function () {
         estadistica.Init({
             searchVenta: '@Url.Action("searchVenta", "Estadistica")',
-            mostrarTodos: '@Url.Action("mostrarTodos", "Estadistica")',
+            mostrarTodos: '@Url.Action("mostrarTodos", "Estadistica")'
         });
     });
 </script>
@@ -31,22 +31,32 @@
 
             <div class="row mb-2">
 
-                <div class="col-3">
+                <div class="col-2">
                     <div class="form-group">
                         <label for="cboFiltrosBusquedaEstadistica">Filtros Busqueda</label>
                         <select class="form-select" aria-label="Disabled select example" id="cboFiltrosBusquedaEstadistica">
                           <option value="0" selected>Seleccione</option>
-                          <option value="1">Monto</option>
-                          <option value="2">Placa</option>
-                          <option value="3">Horas</option>
+                          <option value="1">Mes</option>
+                          <option value="2">Dia</option>
+                          <option value="3">Tiempo</option>
+                          <option value="4">Rentabilidad</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="col-3">
+                <div class="col-2">
                     <div class="form-group">
                         <label for="txtValorBusquedaEstadistica">Descripcion</label>
-                        <input type="text" class="form-control" id="txtValorBusquedaEstadistica">
+                        <input type="time" class="form-control" id="txtValorBusquedaEstadistica">
+                    </div>
+                </div>
+
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="cboValorBusquedaEstadistica">Descripcion</label>
+                        <select class="form-select" aria-label="Disabled select example" id="cboValorBusquedaEstadistica">
+                            <option value="0" selected>Seleccione</option>
+                        </select>
                     </div>
                 </div>
 

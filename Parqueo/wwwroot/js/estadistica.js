@@ -15,7 +15,8 @@ var estadistica = function () {
     var txtMontoPagar = $("#txtMontoPagarEstadistica");
     var txtSearchEstadistica = $("#txtValorBusquedaEstadistica");
     var cboFiltrosBusqueda = $('#cboFiltrosBusquedaEstadistica');
-
+    var cboSearchEstadistica = $('#cboValorBusquedaEstadistica');
+    var listadoParqueos = [];
 
     // Botones
     var btnSearchEstadistica = $('#btnBuscarEstadistica');
@@ -32,6 +33,9 @@ var estadistica = function () {
         txtPlaca.prop('disabled', true);
         txtMontoPagar.prop('disabled', true);
         txtTiempoConsumo.prop('disabled', true);
+
+        txtSearchEstadistica.prop('disabled', true);
+        cboSearchEstadistica.prop('disabled', true);
 
         $('.btnVer').click(function (e) {
 
@@ -200,10 +204,11 @@ var estadistica = function () {
     }
 
     const fnSearchVenta = function (e) {
-
+        debugger;
         e.preventDefault();
+        var valueSearch = "";
 
-        if (txtSearchEstadistica.val() == '' || cboFiltrosBusqueda.val() == '0') {
+        if ((txtSearchEstadistica.val() == '' && cboSearchEstadistica.val() == '') || cboFiltrosBusqueda.val() == '0') {
             Swal.fire({
                 title: 'Error!',
                 text: 'Seleccione el filtro a buscar y el valor de busqueda.',
@@ -214,13 +219,19 @@ var estadistica = function () {
             return;
         }
 
+        if (cboFiltrosBusqueda.val() == "1" || cboFiltrosBusqueda.val() == "2") {
+            valueSearch = cboSearchEstadistica.val();
+        } else {
+            valueSearch = txtSearchEstadistica.val();
+        }
+
         // Se envia la peticion atravez de Ajax
         $.ajax({
             async: true,
             type: "GET",
             url: initArgs.searchVenta,
             data: {
-                valor: txtSearchEstadistica.val(),
+                valor: valueSearch,
                 filtro: cboFiltrosBusqueda.val()
             },
             datatype: "json",
@@ -275,10 +286,94 @@ var estadistica = function () {
 
         const value = e.target.value;
 
-        if (value == "3") {
-            txtSearchEstadistica.prop("type", "time");
+        if (value == "1") {
+
+            txtSearchEstadistica.prop('disabled', true);
+            cboSearchEstadistica.prop('disabled', false);
+
+            cboSearchEstadistica.find('option').remove();
+
+            const meses = [];
+
+            meses.push({ value: "01", name: "Enero" });
+            meses.push({ value: "02", name: "Febrero" });
+            meses.push({ value: "03", name: "Marzo" });
+            meses.push({ value: "04", name: "Abril" });
+            meses.push({ value: "05", name: "Mayo" });
+            meses.push({ value: "06", name: "Junio" });
+            meses.push({ value: "07", name: "Julio" });
+            meses.push({ value: "08", name: "Agosto" });
+            meses.push({ value: "09", name: "Septiembre" });
+            meses.push({ value: "10", name: "Octubre" });
+            meses.push({ value: "11", name: "Noviembre" });
+            meses.push({ value: "12", name: "Diciembre" });
+
+            meses.forEach((item) => {
+
+                cboSearchEstadistica.append(`<option value="${item.value}">
+                                                   ${item.name}
+                                              </option>`)
+
+            });
+
+        } else if (value == "2") {
+
+            txtSearchEstadistica.prop('disabled', true);
+            cboSearchEstadistica.prop('disabled', false);
+
+            cboSearchEstadistica.find('option').remove();
+
+            const dias = [];
+
+            dias.push({ value: "01", name: "01" });
+            dias.push({ value: "02", name: "02" });
+            dias.push({ value: "03", name: "03" });
+            dias.push({ value: "04", name: "04" });
+            dias.push({ value: "05", name: "05" });
+            dias.push({ value: "06", name: "06" });
+            dias.push({ value: "07", name: "07" });
+            dias.push({ value: "08", name: "08" });
+            dias.push({ value: "09", name: "09" });
+            dias.push({ value: "10", name: "10" });
+            dias.push({ value: "11", name: "11" });
+            dias.push({ value: "12", name: "12" });
+            dias.push({ value: "13", name: "13" });
+            dias.push({ value: "14", name: "14" });
+            dias.push({ value: "15", name: "15" });
+            dias.push({ value: "16", name: "16" });
+            dias.push({ value: "17", name: "17" });
+            dias.push({ value: "18", name: "18" });
+            dias.push({ value: "19", name: "19" });
+            dias.push({ value: "20", name: "20" });
+            dias.push({ value: "21", name: "21" });
+            dias.push({ value: "22", name: "22" });
+            dias.push({ value: "23", name: "23" });
+            dias.push({ value: "24", name: "24" });
+            dias.push({ value: "25", name: "25" });
+            dias.push({ value: "26", name: "26" });
+            dias.push({ value: "27", name: "27" });
+            dias.push({ value: "28", name: "28" });
+            dias.push({ value: "29", name: "29" });
+            dias.push({ value: "30", name: "30" });
+            dias.push({ value: "31", name: "31" });
+
+            dias.forEach((item) => {
+
+                cboSearchEstadistica.append(`<option value="${item.value}">
+                                                   ${item.name}
+                                              </option>`)
+
+            });
+
+        } else if (value == "3") {
+
+            txtSearchEstadistica.prop('disabled', false);
+            cboSearchEstadistica.prop('disabled', true);
+
         } else {
-            txtSearchEstadistica.prop("type", "text");
+            
+            txtSearchEstadistica.prop('disabled', true);
+            cboSearchEstadistica.prop('disabled', true);
         }
 
     }
