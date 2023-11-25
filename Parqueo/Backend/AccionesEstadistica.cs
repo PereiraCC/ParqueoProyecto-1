@@ -108,6 +108,11 @@ namespace Parqueo.Backend
                 } 
                 else
                 {
+                    if(tipoBusqueda == "3")
+                    {
+                        valor = valor.Split(':')[0];
+                    }
+
                     endPoint = $"/api/Estadistica/Search?valor={valor}&tipo={tipoBusqueda}";
                 }
 

@@ -265,6 +265,7 @@ var empleados = function () {
             url: initArgs.editEmpleado,
             data: {
                 idEmpleado: idEmpleadoSeleccionado,
+                idParqueo: cboParqueoEmpleado.val(),
                 numeroEmpleado: txtNumeroEmpleado.val(),
                 fechaIngreso: txtFechaIngreso.val(),
                 primerNombre: txtPrimerNombre.val(),

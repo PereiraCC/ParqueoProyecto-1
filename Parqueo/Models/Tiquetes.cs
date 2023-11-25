@@ -24,6 +24,8 @@ namespace Parqueo.Models
         public float montoPagar { get; set; }
 
         public string tiempoConsumido { get; set; }
+
+        public bool venta { get; set; }
         
     }
 }
